@@ -1,0 +1,10 @@
+<configuration>
+	<branch>
+		<pattern>.*</pattern>
+		<versionFormat>${branch}</versionFormat>
+	</branch>
+	<tag>
+		<pattern>.*</pattern>
+		<versionFormat>${tag}</versionFormat>
+	</tag>
+</configuration>
