@@ -10,8 +10,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @ToString
-public class Question {
-    private String content;
-    private Set<Answer> rightAnswers;
-    private List<Answer> answersToChoose;
+public class Excercise {
+    private String question;
+    private Set<String> rightAnswers;
+    private List<String> answersToChoose;
 }
