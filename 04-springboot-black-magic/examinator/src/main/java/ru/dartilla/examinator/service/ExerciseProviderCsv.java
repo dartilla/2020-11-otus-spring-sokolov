@@ -11,8 +11,9 @@ public class ExerciseProviderCsv implements ExerciseProvider {
     private final Scanner scanner;
     private final ExerciseParserCsv exerciseParser;
 
-    public ExerciseProviderCsv(@Value("${questionAndAnswersFileResourcePath}") String questionAndAnswersFileName,
-                               ExerciseParserCsv exerciseParser) {
+    public ExerciseProviderCsv(
+            @Value("${questionAndAnswersFileResourcePath}") String questionAndAnswersFileName,
+            ExerciseParserCsv exerciseParser) {
         scanner = new Scanner(getClass().getResourceAsStream(questionAndAnswersFileName));
         this.exerciseParser = exerciseParser;
     }

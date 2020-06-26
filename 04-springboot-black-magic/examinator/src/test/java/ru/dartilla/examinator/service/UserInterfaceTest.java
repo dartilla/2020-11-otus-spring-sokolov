@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.dartilla.examinator.config.localization.DefLocaleMessageSource;
 import ru.dartilla.examinator.domain.Exercise;
 
 import java.io.ByteArrayInputStream;
@@ -25,13 +26,16 @@ class UserInterfaceTest {
     @Mock
     private InOut inOut;
 
+    @Mock
+    private DefLocaleMessageSource messageSource;
+
     private UserInterface userInterface;
     private ByteArrayOutputStream outByteArrayStream;
 
     @BeforeEach
     private void setUp() {
         outByteArrayStream = new ByteArrayOutputStream(1000);
-        userInterface = new UserInterface(inOut);
+        userInterface = new UserInterface(inOut, messageSource);
     }
 
     @Test

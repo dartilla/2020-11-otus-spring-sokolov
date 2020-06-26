@@ -1,6 +1,6 @@
-What aggregate state water could be?...,1-2-3,Liquid,Gaseous,Solid
-How much colours rainbow has?,4,6,5,4,7
-Dog is a ...,2,Fish,Animal,Mushroom
-What season comes after Spring?,1,Summer,Winter,Autumn,Spring
-Why australian natives killed captain Cook?,1,The science has no answer
-Who invent theory of relativity?,1,Einstein
+possibleAggregateState,1-2-3,liquid,gaseous,solid
+coloursInRainbow,5,4,6,5,4,7
+kindOfDog,2,fish,animal,mushroom
+seasonAfterSpring,1,summer,winter,autumn,spring
+whyCaptainCookKilled,1,scienceHasNoAnswer
+inventorOfRelativityTheory,1,einstein
