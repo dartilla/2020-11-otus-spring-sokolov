@@ -1,0 +1,4 @@
+questionAndAnswersFileResourcePath: /questionsAndAnswers.csv
+questionCountInExam: 5
+rightAnswersToPassExam: 3
+locale: "ru"
