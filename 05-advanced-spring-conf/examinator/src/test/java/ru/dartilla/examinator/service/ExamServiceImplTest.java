@@ -47,6 +47,7 @@ public class ExamServiceImplTest {
         when(exerciseProvider.next()).thenReturn(anyExercise);
 
         new ExamServiceImpl(5, 3, exerciseProvider,  authService, userInterface).doExam();
+        verify(exerciseProvider, times(1)).refresh();
         verify(exerciseProvider, times(5)).next();
         verify(exerciseProvider, times(1)).close();
         verify(userInterface, times(1)).printExamPassed(any(), any(Integer.class));

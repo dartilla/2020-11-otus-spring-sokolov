@@ -2,9 +2,12 @@ package ru.dartilla.examinator.service;
 
 import org.springframework.stereotype.Service;
 import ru.dartilla.examinator.config.localization.DefLocaleMessageSource;
+import ru.dartilla.examinator.domain.ExamDetails;
 import ru.dartilla.examinator.domain.Exercise;
+import ru.dartilla.examinator.domain.ExerciseResult;
 import ru.dartilla.examinator.domain.User;
 
+import java.io.PrintStream;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -55,7 +58,28 @@ public class UserInterface {
     }
 
     public void printStartExam() {
-        inOut.getOut().println();
-        inOut.getOut().println(messageSource.getMessage("ui.pleaseWriteDownAnswers"));
+        PrintStream out = inOut.getOut();
+        out.println();
+        out.println(messageSource.getMessage("ui.pleaseWriteDownAnswers"));
+    }
+
+    public void printExamDetails(ExamDetails examDetails) {
+        PrintStream out = inOut.getOut();
+        out.println(messageSource.getMessage("ui.examDetails") + ":");
+        out.println();
+        int rightAnswers = 0;
+        for (ExerciseResult result : examDetails.getExerciseResults()) {
+            out.println(messageSource.getMessage("ui.examDetails.question") + ": " + result.getExercise().getQuestion());
+            out.println(messageSource.getMessage("ui.examDetails.isAnsweredCorrect") + ": " + result.isAnsweredCorrect());
+            out.println("----");
+            if (result.isAnsweredCorrect()) {
+                rightAnswers++;
+            }
+        }
+        int rightAnswersToPassExam = examDetails.getRightAnswersToPassExam();
+        out.println();
+        out.println(messageSource.getMessage("ui.examDetails.totalQuestion") + ": " + examDetails.getExerciseResults().size());
+        out.println(messageSource.getMessage("ui.examDetails.rightAnswers") + ": " + rightAnswers);
+        out.println(messageSource.getMessage("ui.examDetails.rightAnswersToPassExam") + ": " + rightAnswersToPassExam);
     }
 }

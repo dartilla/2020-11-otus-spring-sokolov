@@ -7,3 +7,6 @@
 #   |_____/_/\_\__,_|_| |_| |_|_|_| |_|\__,_|\__\___/|_|
 #
 
+Examinator Shell Commands
+        examStart: Start examination process
+        examDetail: Last examination details

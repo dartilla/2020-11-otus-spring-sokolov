@@ -8,13 +8,15 @@ import java.util.*;
 
 @Service
 public class ExerciseProviderCsv implements ExerciseProvider {
-    private final Scanner scanner;
     private final ExerciseParserCsv exerciseParser;
+    private final String questionAndAnswersFileName;
+
+    private Scanner scanner;
 
     public ExerciseProviderCsv(
             @Value("${questionAndAnswersFileResourcePath}") String questionAndAnswersFileName,
             ExerciseParserCsv exerciseParser) {
-        scanner = new Scanner(getClass().getResourceAsStream(questionAndAnswersFileName));
+        this.questionAndAnswersFileName = questionAndAnswersFileName;
         this.exerciseParser = exerciseParser;
     }
 
@@ -31,5 +33,10 @@ public class ExerciseProviderCsv implements ExerciseProvider {
     @Override
     public void close() {
         scanner.close();
+    }
+
+    @Override
+    public void refresh() {
+        scanner = new Scanner(getClass().getResourceAsStream(questionAndAnswersFileName));
     }
 }

@@ -2,8 +2,13 @@ package ru.dartilla.examinator.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.dartilla.examinator.domain.ExamDetails;
 import ru.dartilla.examinator.domain.Exercise;
+import ru.dartilla.examinator.domain.ExerciseResult;
 import ru.dartilla.examinator.domain.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -14,6 +19,8 @@ public class ExamServiceImpl implements ExamService {
     private final ExerciseProvider exerciseProvider;
     private final AuthService authService;
     private final UserInterface userInterface;
+
+    private ExamDetails lastExamDetails;
 
     public ExamServiceImpl(@Value("${questionCountInExam}") int questionCountInExam,
                            @Value("${rightAnswersToPassExam}") int rightAnswersToPassExam,
@@ -35,23 +42,41 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public void doExam() {
-        User user = authService.authenticate();
+        doExam(authService.authenticate());
+    }
+
+    @Override
+    public void doExam(User user) {
         userInterface.printStartExam();
+        List<ExerciseResult> exerciseResults = new ArrayList<>();
         int currItemNumber = 0;
         int rightAnswers = 0;
+        exerciseProvider.refresh();
         while (exerciseProvider.hasNext() && currItemNumber < questionCountInExam) {
             Exercise exercise = exerciseProvider.next();
             userInterface.printQuestion(exercise);
             if (userInterface.readAnswer().containsAll(exercise.getRightAnswers())) {
                 rightAnswers++;
+                exerciseResults.add(new ExerciseResult(exercise, true));
+            } else {
+                exerciseResults.add(new ExerciseResult(exercise, false));
             }
             currItemNumber++;
         }
         exerciseProvider.close();
-        if (rightAnswers < rightAnswersToPassExam) {
+        boolean isExamPassed = rightAnswers < rightAnswersToPassExam;
+        if (isExamPassed) {
             userInterface.printExamFailed(user, rightAnswers);
         } else {
             userInterface.printExamPassed(user, rightAnswers);
+        }
+        lastExamDetails = new ExamDetails(exerciseResults, rightAnswersToPassExam, user);
+    }
+
+    @Override
+    public void printDetail() {
+        if (lastExamDetails != null) {
+            userInterface.printExamDetails(lastExamDetails);
         }
     }
 }
