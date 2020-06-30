@@ -1,6 +1,7 @@
 package ru.dartilla.examinator.service;
 
 import org.springframework.stereotype.Service;
+import ru.dartilla.examinator.config.localization.DefLocaleMessageSource;
 import ru.dartilla.examinator.domain.Exercise;
 import ru.dartilla.examinator.domain.User;
 
@@ -13,9 +14,11 @@ import static java.util.stream.Collectors.toSet;
 public class UserInterface {
 
     private final InOut inOut;
+    private final DefLocaleMessageSource messageSource;
 
-    public UserInterface(InOut inOut) {
+    public UserInterface(InOut inOut, DefLocaleMessageSource messageSource) {
         this.inOut = inOut;
+        this.messageSource = messageSource;
     }
 
     public void printQuestion(Exercise exercise) {
@@ -39,21 +42,20 @@ public class UserInterface {
 
     public void printExamPassed(User user, int rightAnswers) {
         inOut.getOut().println(System.lineSeparator() + getUserName(user)
-                + ", You have passed examination. Right answers=" + rightAnswers + ". Congratulations!");
+                + messageSource.getMessage("ui.passedExam1") + rightAnswers + messageSource.getMessage("ui.passedExam2"));
     }
 
     public void printExamFailed(User user, int rightAnswers) {
         inOut.getOut().println(System.lineSeparator() + getUserName(user)
-                + ", You have failed examination. Right answers=" + rightAnswers + ". Let's try again!");
+                + messageSource.getMessage("ui.failedExam1") + rightAnswers + messageSource.getMessage("ui.failedExam2"));
     }
 
     private String getUserName(User user) {
-        return "Dear " + user.getName() + " " + user.getSurname();
+        return messageSource.getMessage("ui.greetingDear") + " " + user.getName() + " " + user.getSurname();
     }
 
     public void printStartExam() {
         inOut.getOut().println();
-        inOut.getOut().println("Please write down answers. If there are more than one right answer," +
-                " than write it separated by comma and space (Ex: firstAnswer, secondAnswer)");
+        inOut.getOut().println(messageSource.getMessage("ui.pleaseWriteDownAnswers"));
     }
 }
