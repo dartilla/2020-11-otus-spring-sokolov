@@ -6,4 +6,5 @@ public interface ExerciseProvider {
     boolean hasNext();
     Exercise next();
     void close();
+    void refresh();
 }
