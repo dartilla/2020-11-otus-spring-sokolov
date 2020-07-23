@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/rootChangelog.xml
+
+---
+spring:
+  profiles: localh2
+  datasource:
+    url: jdbc:h2:${h2path}
