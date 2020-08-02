@@ -2,8 +2,8 @@
 
 --changeset dartilla:2020-07-18--02-base-tables-data
 insert into author (id, name)
-values (1, 'К. Кастанеда'),
-       (2, 'А. К. Дойль');
+values (1, 'Кастанеда К.'),
+       (2, 'Дойль A. К.');
 
 insert into genre (id, name)
 values (1, 'Мистика'),
