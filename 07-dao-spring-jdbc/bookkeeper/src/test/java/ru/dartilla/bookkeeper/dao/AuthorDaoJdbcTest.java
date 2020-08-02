@@ -29,13 +29,13 @@ class AuthorDaoJdbcTest {
     @DisplayName("искать автора по идентификатору")
     @Test
     void shouldGetById() {
-        assertThat(dao.getById(1L).getName()).isEqualTo("К. Кастанеда");
+        assertThat(dao.getById(1L).getName()).isEqualTo("Кастанеда К.");
     }
 
     @DisplayName("искать автора по имени ")
     @Test
     void shouldFindByName() {
-        Author expected = new Author(null, "К. Кастанеда");
+        Author expected = new Author(null, "Кастанеда К.");
         assertThat(dao.findByName(expected.getName()).get())
                 .isEqualToComparingOnlyGivenFields(expected, "name");
     }
@@ -43,7 +43,7 @@ class AuthorDaoJdbcTest {
     @DisplayName("вернуть без ошибок Optional для автора не найденого по имени")
     @Test
     void shouldFindEmptyOptionalByNotExistName() {
-        Author expected = new Author(null, "К. Кастанеда22") ;
+        Author expected = new Author(null, "Кастанеда К.22") ;
         assertThat(dao.findByName(expected.getName()).isEmpty()).isTrue();
     }
 

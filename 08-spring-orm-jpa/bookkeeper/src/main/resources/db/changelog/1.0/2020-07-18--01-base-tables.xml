@@ -41,10 +41,18 @@
             <column name="author_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="genre_id" type="bigint">
+            <column name="in_storage" type="NUMERIC(1, 0)">
                 <constraints nullable="false"/>
             </column>
-            <column name="in_storage" type="NUMERIC(1, 0)">
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-07-18--01-book_genre" author="dartilla">
+        <createTable tableName="book_genre">
+            <column name="book_id" type="bigint" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="genre_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>

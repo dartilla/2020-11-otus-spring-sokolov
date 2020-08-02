@@ -4,6 +4,11 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/rootChangelog.xml
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
 
 ---
 spring:

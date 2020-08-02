@@ -12,6 +12,8 @@ import ru.dartilla.bookkeeper.exception.BookkeeperException;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,19 +26,19 @@ public class UserInterfaceImpl implements UserInterface {
         PrintStream out = inOut.getOut();
         Scanner in = inOut.getIn();
         BookSearchVo bookSearchVo = readBookSearchVo();
-        out.println("Введите жанр:");
-        String genreName = in.nextLine();
-        return new BookInsertVo(bookSearchVo.getTitle(), bookSearchVo.getAuthorName(), genreName);
+        out.println("Введите жанры (через запятую):");
+        String[] genreNames = in.nextLine().split(", ");
+        return new BookInsertVo(bookSearchVo.getTitle(), bookSearchVo.getAuthorName(), Set.of(genreNames));
     }
 
     @Override
     public BookSearchVo readBookSearchVo() {
         PrintStream out = inOut.getOut();
         Scanner in = inOut.getIn();
-        out.println("Введите наименование книги:");
-        String bookTitle = in.nextLine();
         out.println("Введите инициалы и фамилию автора:");
         String authorName = in.nextLine();
+        out.println("Введите наименование книги:");
+        String bookTitle = in.nextLine();
         return new BookSearchVo(bookTitle, authorName);
     }
 
@@ -44,8 +46,10 @@ public class UserInterfaceImpl implements UserInterface {
     public void printBooks(Collection<BookOverviewVo> books) {
         PrintStream out = inOut.getOut();
         for (BookOverviewVo book : books) {
-            out.println(String.format("%s - %s; Доступно для выдачи: %s",
-                    book.getAuthorName(), book.getTitle(), book.getAvailableToBorrow()));
+
+            out.println(String.format("%s - %s; %s; Доступно для выдачи: %s",
+                    book.getAuthorName(), book.getTitle(), book.getGenreNames().stream().collect(Collectors.joining(", ")),
+                    book.getAvailableToBorrow()));
         }
     }
 

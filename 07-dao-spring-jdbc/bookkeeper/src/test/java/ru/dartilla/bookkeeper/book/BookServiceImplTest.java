@@ -51,7 +51,7 @@ class BookServiceImplTest {
     @DisplayName("добавлять книгу")
     @Test
     public void shouldAddBook() {
-        BookInsertVo expected = new BookInsertVo("Книга 1", "А. Тютчев", "Фантастика");
+        BookInsertVo expected = new BookInsertVo("Книга 1", "Тютчев А.", "Фантастика");
         Author author = new Author(22L, expected.getAuthorName());
         when(authorService.acquireAuthor(any())).thenReturn(author);
         when(genreService.findGenreByName(any())).thenReturn(Optional.of(new Genre(22L, "Роман")));

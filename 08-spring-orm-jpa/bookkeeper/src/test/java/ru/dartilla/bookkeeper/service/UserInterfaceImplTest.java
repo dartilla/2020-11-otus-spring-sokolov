@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,10 +45,10 @@ class UserInterfaceImplTest {
     @DisplayName("позволяет ввести книгу для вставки")
     @Test
     public void shouldReadBookInsertVo() {
-        BookInsertVo expected = new BookInsertVo("Книга 1", "А. Тютчев", "Фантастика");
+        BookInsertVo expected = new BookInsertVo("Книга 1", "Тютчев А.", Set.of("Фантастика"));
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
-        List<String> data = Stream.of(expected.getTitle(), expected.getAuthorName(),
-                expected.getGenreName()).collect(Collectors.toList());
+        List<String> data = Stream.of(expected.getAuthorName(), expected.getTitle()).collect(Collectors.toList());
+        data.addAll(expected.getGenreNames());
         when(inOut.getIn()).thenReturn(new Scanner(new ByteArrayInputStream(String.join(System.lineSeparator(), data).getBytes())));
         assertThat(userInterface.readBookInsertVo()).isEqualToComparingFieldByField(expected);
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
@@ -57,9 +58,9 @@ class UserInterfaceImplTest {
     @DisplayName("позволяет ввести книгу для поиска")
     @Test
     public void shouldReadBookSearchVo() {
-        BookInsertVo expected = new BookInsertVo("Книга 1", "А. Тютчев", "Фантастика");
+        BookInsertVo expected = new BookInsertVo("Книга 1", "Тютчев А.", Set.of("Фантастика"));
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
-        List<String> data = Stream.of(expected.getTitle(), expected.getAuthorName()).collect(Collectors.toList());
+        List<String> data = Stream.of(expected.getAuthorName(), expected.getTitle()).collect(Collectors.toList());
         when(inOut.getIn()).thenReturn(new Scanner(new ByteArrayInputStream(String.join(System.lineSeparator(), data).getBytes())));
         assertThat(userInterface.readBookSearchVo()).isEqualToComparingFieldByField(expected);
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
@@ -70,12 +71,13 @@ class UserInterfaceImplTest {
     @Test
     public void printBooks() {
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
-        BookOverviewVo expected = new BookOverviewVo("Книга 1", "А. Тютчев", 2);
+        BookOverviewVo expected = new BookOverviewVo("Книга 1", "Тютчев А.", 2, Set.of("Стихи, Проза"));
         userInterface.printBooks(Arrays.asList(expected));
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
         assertThat(outResult).contains("Доступно для выдачи");
         assertThat(outResult).contains(expected.getTitle(), expected.getAuthorName(),
-                String.valueOf(expected.getAvailableToBorrow()));
+                String.valueOf(expected.getAvailableToBorrow()),
+                expected.getGenreNames().stream().collect(Collectors.joining(", ")));
     }
 
     @DisplayName("читает валидный идентификатор книги")
