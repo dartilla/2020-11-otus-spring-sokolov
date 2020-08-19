@@ -6,6 +6,9 @@ import org.hibernate.annotations.BatchSize;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Рукопись (книга как литературное произведение)
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

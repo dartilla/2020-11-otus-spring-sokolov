@@ -32,8 +32,6 @@ public class CommentServiceImpl implements CommentService {
     public CommentTree findByScript(Long scriptId) {
         List<CommentNode> rootNodeList = new ArrayList<>();
         Script script = scriptService.findById(scriptId).orElseThrow(() -> new ScriptIsNotFound());
-        Script script2 = scriptService.findById(scriptId).orElseThrow(() -> new ScriptIsNotFound());
-        log.debug("dlog script2.title={}", script2.getTitle());
         List<Comment> allComments = commentRepository.findByScript(scriptId);
         Map<Long, CommentNode> nodeByIdIndex = allComments.stream().collect(toMap(Comment::getId,
                 vo -> new CommentNode(vo.getId(), vo.getMessage(), new ArrayList<>())));

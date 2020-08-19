@@ -7,6 +7,9 @@ import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 
+/**
+ * Книга (конкретный экземпляр)
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

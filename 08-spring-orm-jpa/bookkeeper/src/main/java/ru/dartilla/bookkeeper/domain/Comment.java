@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Коментарий к рукописи
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,5 +31,4 @@ public class Comment {
 
     @Column(name = "message")
     private String message;
-
 }

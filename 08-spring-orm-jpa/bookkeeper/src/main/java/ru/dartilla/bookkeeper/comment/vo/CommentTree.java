@@ -10,6 +10,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CommentTree {
-    private Script script;
-    private List<CommentNode> nodes;
+    private final Script script;
+    private final List<CommentNode> nodes;
 }
