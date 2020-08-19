@@ -44,7 +44,7 @@ class UserInterfaceImplTest {
     @DisplayName("позволяет ввести книгу для вставки")
     @Test
     public void shouldReadBookInsertVo() {
-        BookInsertVo expected = new BookInsertVo("Книга 1", "Тютчев А.", "Фантастика");
+        BookInsertVo expected = new BookInsertVo("Книга 1", "А. Тютчев", "Фантастика");
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
         List<String> data = Stream.of(expected.getTitle(), expected.getAuthorName(),
                 expected.getGenreName()).collect(Collectors.toList());
@@ -57,7 +57,7 @@ class UserInterfaceImplTest {
     @DisplayName("позволяет ввести книгу для поиска")
     @Test
     public void shouldReadBookSearchVo() {
-        BookInsertVo expected = new BookInsertVo("Книга 1", "Тютчев А.", "Фантастика");
+        BookInsertVo expected = new BookInsertVo("Книга 1", "А. Тютчев", "Фантастика");
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
         List<String> data = Stream.of(expected.getTitle(), expected.getAuthorName()).collect(Collectors.toList());
         when(inOut.getIn()).thenReturn(new Scanner(new ByteArrayInputStream(String.join(System.lineSeparator(), data).getBytes())));
@@ -70,7 +70,7 @@ class UserInterfaceImplTest {
     @Test
     public void printBooks() {
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
-        BookOverviewVo expected = new BookOverviewVo("Книга 1", "Тютчев А.", 2);
+        BookOverviewVo expected = new BookOverviewVo("Книга 1", "А. Тютчев", 2);
         userInterface.printBooks(Arrays.asList(expected));
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
         assertThat(outResult).contains("Доступно для выдачи");

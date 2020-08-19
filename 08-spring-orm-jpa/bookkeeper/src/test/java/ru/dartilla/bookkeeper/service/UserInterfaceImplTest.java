@@ -121,7 +121,7 @@ class UserInterfaceImplTest {
                                 new CommentNode(4L, "firstGrandChildMessage", emptyList())
                         ))))
         );
-        CommentTree commentTree = new CommentTree(new Script(1L, "Новая заря", new Author(1L, "Неизветсных О."), null), rootNodes);
+        CommentTree commentTree = new CommentTree(new Script(1L, "Новая заря", new Author(1L, "Неизветсных О."), null, null), rootNodes);
         userInterface.printComments(commentTree);
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
         System.out.println(outResult);

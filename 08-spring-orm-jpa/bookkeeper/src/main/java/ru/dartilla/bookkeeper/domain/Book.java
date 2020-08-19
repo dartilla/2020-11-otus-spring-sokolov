@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
-
 import javax.persistence.*;
 
 /**
@@ -15,6 +14,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "book")
+@NamedEntityGraph(name = "bookEntityGraphWithScriptAndAuthor",
+        attributeNodes = {@NamedAttributeNode(value = "script", subgraph = "scriptWithAuthor")},
+        subgraphs = {@NamedSubgraph(name = "scriptWithAuthor", attributeNodes = @NamedAttributeNode("author"))})
 public class Book {
 
     @Id

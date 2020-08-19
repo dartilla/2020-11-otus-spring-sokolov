@@ -103,8 +103,8 @@ class BookDaoJdbcTest {
     @DisplayName("находить информацию о доступности книг")
     @Test
     void shouldFindBookOverview() {
-        BookOverviewVo one = new BookOverviewVo("Учение дона Хуана", "Кастанеда К.", 1);
-        BookOverviewVo two = new BookOverviewVo("Отдельная реальность", "Кастанеда К.", 2);
+        BookOverviewVo one = new BookOverviewVo("Учение дона Хуана", "К. Кастанеда", 1);
+        BookOverviewVo two = new BookOverviewVo("Отдельная реальность", "К. Кастанеда", 2);
         assertThat(dao.getBooksOverview()).contains(one, two);
     }
 }

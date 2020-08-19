@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
             throw new GenreNotFoundException(absentGenre.get());
         }
         Script script = scriptService.findByAuthorIdAndTitle(author.getId(), bookInsertVo.getTitle())
-                .orElseGet(() -> new Script(null, bookInsertVo.getTitle(), author, genres));
+                .orElseGet(() -> new Script(null, bookInsertVo.getTitle(), author, genres, null));
         if (script.getId() == null) {
             scriptService.save(script);
         }

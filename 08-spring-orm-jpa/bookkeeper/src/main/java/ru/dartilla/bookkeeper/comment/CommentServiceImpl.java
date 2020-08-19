@@ -14,10 +14,9 @@ import ru.dartilla.bookkeeper.exception.ScriptIsNotFound;
 import ru.dartilla.bookkeeper.script.ScriptService;
 import ru.dartilla.bookkeeper.repositores.CommentRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 @Service
@@ -32,7 +31,8 @@ public class CommentServiceImpl implements CommentService {
     public CommentTree findByScript(Long scriptId) {
         List<CommentNode> rootNodeList = new ArrayList<>();
         Script script = scriptService.findById(scriptId).orElseThrow(() -> new ScriptIsNotFound());
-        List<Comment> allComments = commentRepository.findByScript(scriptId);
+        Collection<Comment> allComments = script.getComments().stream().sorted(Comparator.comparing(Comment::getId))
+                .collect(toList());
         Map<Long, CommentNode> nodeByIdIndex = allComments.stream().collect(toMap(Comment::getId,
                 vo -> new CommentNode(vo.getId(), vo.getMessage(), new ArrayList<>())));
         for (Comment dbVo : allComments) {

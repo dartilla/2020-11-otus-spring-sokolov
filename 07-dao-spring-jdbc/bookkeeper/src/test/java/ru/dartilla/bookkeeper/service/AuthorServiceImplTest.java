@@ -34,7 +34,7 @@ class AuthorServiceImplTest {
     void shouldReturnInsertedAuthorWithNewId() {
         long newId = 77L;
         when(authorDao.insert(any())).thenReturn(newId);
-        Author expected = new Author(null, "Пупкин В. В.");
+        Author expected = new Author(null, "В. Пупкин");
         Author actual = authorService.insertAuthor(expected);
         assertThat(actual.getId()).isEqualTo(newId);
         assertThat(actual).isEqualToComparingOnlyGivenFields(expected, "name");
@@ -43,7 +43,7 @@ class AuthorServiceImplTest {
     @DisplayName("возвращать существующего автора по ФИО")
     @Test
     void shouldGetExistingAuthorByFIO() {
-        Author expected = new Author(77L, "Пупкин В. В.");
+        Author expected = new Author(77L, "В. Пупкин");
         when(authorDao.findByName(expected.getName())).thenReturn(Optional.of(expected));
         Author actual = authorService.acquireAuthor(expected.getName());
         assertThat(actual).isEqualTo(expected);
@@ -52,7 +52,7 @@ class AuthorServiceImplTest {
     @DisplayName("создавать (несуществующего) и возвращать автора по ФИО")
     @Test
     void shouldCreateAndGetExistingAuthorByFIO() {
-        Author expected = new Author(77L, "Пупкин В. В.");
+        Author expected = new Author(77L, "В. Пупкин");
         when(authorDao.insert(any())).thenReturn(expected.getId());
         Author actual = authorService.acquireAuthor(expected.getName());
         assertThat(actual).isEqualToComparingFieldByField(expected);

@@ -10,6 +10,8 @@ import java.util.Set;
  * Рукопись (книга как литературное произведение)
  */
 @Data
+@ToString(exclude = {"genres", "comments"})
+@EqualsAndHashCode(exclude = {"genres", "comments"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -35,4 +37,7 @@ public class Script {
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id")
     )
     private Set<Genre> genres;
+
+    @OneToMany(mappedBy = "script")
+    private Set<Comment> comments;
 }

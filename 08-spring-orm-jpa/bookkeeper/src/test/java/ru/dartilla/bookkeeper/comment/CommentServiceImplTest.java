@@ -14,16 +14,11 @@ import ru.dartilla.bookkeeper.domain.Author;
 import ru.dartilla.bookkeeper.domain.Script;
 import ru.dartilla.bookkeeper.domain.Comment;
 import ru.dartilla.bookkeeper.script.ScriptService;
-import ru.dartilla.bookkeeper.script.vo.ScriptSearchVo;
 import ru.dartilla.bookkeeper.repositores.CommentRepository;
 import ru.dartilla.bookkeeper.service.AuthorService;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -51,15 +46,14 @@ class CommentServiceImplTest {
     @Test
     public void shouldFindByBook() {
         Author author = new Author(22L, "Неизветсных О.");
-        Script script = new Script(100L, "моя книга", author, null);
+        Script script = new Script(100L, "моя книга", author, null, new HashSet<>());
         Comment first = new Comment(1L, script, null, "first");
         Comment firstChild = new Comment(2L, script, first, "firstChild");
         Comment secondChild = new Comment(3L, script, first, "secondChild");
         Comment firstGrand = new Comment(4L, script, firstChild, "firstGrand");
         Comment second = new Comment(5L, script, null, "second");
+        script.getComments().addAll(Arrays.asList(first, firstChild, secondChild, firstGrand, second));
         when(scriptService.findById(script.getId())).thenReturn(Optional.of(script));
-        when(commentRepository.findByScript(script.getId())).thenReturn(asList(first, firstChild, secondChild,
-                firstGrand, second));
 
         CommentTree commentTree = commentService.findByScript(script.getId());
         List<CommentNode> comments = commentTree.getNodes();
@@ -69,16 +63,16 @@ class CommentServiceImplTest {
                         new CommentNode(second.getId(), second.getMessage(), null));
         assertThat(comments.get(0).getChildren())
                 .usingElementComparator(Comparator.comparing(CommentNode::getId).thenComparing(CommentNode::getMessage))
-                .containsOnly(new CommentNode(first.getId(), firstChild.getMessage(), null),
-                        new CommentNode(second.getId(), secondChild.getMessage(), null));
-        assertThat(comments.get(0).getChildren().get(0)).isEqualToComparingOnlyGivenFields(
-                new CommentNode(firstChild.getId(), firstChild.getMessage(), null), "message");
+                .containsOnly(new CommentNode(firstChild.getId(), firstChild.getMessage(), null),
+                        new CommentNode(secondChild.getId(), secondChild.getMessage(), null));
+        assertThat(comments.get(0).getChildren().get(0).getChildren().get(0)).isEqualToComparingOnlyGivenFields(
+                new CommentNode(firstGrand.getId(), firstGrand.getMessage(), null), "message");
     }
 
     @DisplayName("добавлять первый комментарий")
     @Test
     public void shouldAddRootComment() {
-        Script script = new Script(100L, "моя книга", null, null);
+        Script script = new Script(100L, "моя книга", null, null, null);
         Comment newComment = new Comment(null, script, null, "new");
         when(scriptService.findById(script.getId())).thenReturn(Optional.of(script));
         commentService.addComment(new CommentInsertVo(script.getId(), null, newComment.getMessage()));
@@ -91,7 +85,7 @@ class CommentServiceImplTest {
     @DisplayName("добавлять дочерний комментарий")
     @Test
     public void shouldAddChildComment() {
-        Script script = new Script(100L, "моя книга", null, null);
+        Script script = new Script(100L, "моя книга", null, null, null);
         Comment parentComment = new Comment(2L, script, null, "root");
         Comment newComment = new Comment(3L, script, parentComment, "new");
         when(scriptService.findById(script.getId())).thenReturn(Optional.of(script));

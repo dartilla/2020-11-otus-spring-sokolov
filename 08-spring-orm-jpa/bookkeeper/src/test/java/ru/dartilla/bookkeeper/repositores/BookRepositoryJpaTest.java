@@ -32,7 +32,7 @@ class BookRepositoryJpaTest {
     @DisplayName("находить в экземпляр книги в по рукописи")
     @Test
     public void shouldFindInStorageByScript() {
-        Script script = new Script(1L, "Учение дона Хуана", null, null);
+        Script script = new Script(1L, "Учение дона Хуана", null, null, null);
         Book expected = bookRepository.findInStorageByScript(script.getId()).get();
         assertThat(expected.isInStorage()).isTrue();
         assertThat(expected.getScript()).isEqualToComparingOnlyGivenFields(script, "id", "title");
@@ -49,7 +49,7 @@ class BookRepositoryJpaTest {
     @DisplayName("сохраняет экзэмпляр книги")
     @Test
     public void shouldSave() {
-        Script script = new Script(99L, "Эхо в Горах", new Author(99L, "Неизвестных О"), null);
+        Script script = new Script(99L, "Эхо в Горах", new Author(99L, "Неизвестных О"), null, null);
         Book book = new Book(null, true, script);
         bookRepository.save(book);
         Book actual = bookRepository.findById(book.getId()).get();
