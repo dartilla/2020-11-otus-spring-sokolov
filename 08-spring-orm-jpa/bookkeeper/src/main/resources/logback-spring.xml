@@ -2,14 +2,29 @@
 <configuration>
     <property name="LOGS" value="./target/logs"/>
 
-    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="heap" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS}/heap.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--            <Pattern>%d %p %c{1.} %C{1.} [%t] %m%n</Pattern>-->
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS}/archived/heap-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="sql" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/sql.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS}/archived/spring-boot-logger-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOGS}/archived/sql-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -17,6 +32,13 @@
     </appender>
 
     <root level="debug">
-        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="heap"/>
     </root>
+
+    <logger name="org.hibernate.SQL" level="ERROR"/>
+
+    <logger name="net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener" level="DEBUG" additivity="false">
+        <appender-ref ref="heap" />
+        <appender-ref ref="sql" />
+    </logger>
 </configuration>

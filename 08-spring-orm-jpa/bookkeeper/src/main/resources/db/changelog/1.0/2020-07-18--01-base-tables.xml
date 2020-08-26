@@ -30,10 +30,10 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="2020-07-18--01-book" author="dartilla">
-        <createTable tableName="book">
+    <changeSet id="2020-07-18--01-script" author="dartilla">
+        <createTable tableName="script">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_book"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_script"/>
             </column>
             <column name="title" type="varchar(250)">
                 <constraints nullable="false"/>
@@ -41,10 +41,44 @@
             <column name="author_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="genre_id" type="bigint">
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-07-18--01-book" author="dartilla">
+        <createTable tableName="book">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_book"/>
+            </column>
+            <column name="script_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="in_storage" type="NUMERIC(1, 0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-07-18--01-script_genre" author="dartilla">
+        <createTable tableName="script_genre">
+            <column name="script_id" type="bigint" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="genre_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020-07-18--01-comment" author="dartilla">
+        <createTable tableName="comment">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_comment"/>
+            </column>
+            <column name="parent_id" type="bigint"/>
+            <column name="script_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="varchar(1024)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

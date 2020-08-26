@@ -9,7 +9,9 @@
 
 Bookkeeper Shell Commands
         showGenres: Просмотреть представленные в библиотеке жанры
-        addBook: Добавить книгу в библиотеку
         showBooks: Просмотреть книги в библиотеке
+        addBook: Добавить книгу в библиотеку
         borrowBook: Взять на время книгу
         returnBook: Вернуть книгу
+        showComments: Посмотреть комментарии на книгу
+        addComment: Добавить комментарий

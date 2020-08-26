@@ -1,21 +1,34 @@
 package ru.dartilla.bookkeeper.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import javax.persistence.*;
 
+/**
+ * Книга (конкретный экземпляр)
+ */
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
+@Entity
+@Table(name = "book")
+@NamedEntityGraph(name = "bookEntityGraphWithScriptAndAuthor",
+        attributeNodes = {@NamedAttributeNode(value = "script", subgraph = "scriptWithAuthor")},
+        subgraphs = {@NamedSubgraph(name = "scriptWithAuthor", attributeNodes = @NamedAttributeNode("author"))})
 public class Book {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private Long authorId;
-    private Long genreId;
-    @Setter
+
+    @Column(name = "in_storage", columnDefinition = "INTEGER")
     private boolean inStorage;
 
-    public int getInStorageAsInt() {
-        return isInStorage() ? 1 : 0;
-    }
+    @ManyToOne
+    @BatchSize(size = 950)
+    @JoinColumn(name = "script_id")
+    private Script script;
 }
