@@ -11,13 +11,13 @@ import ru.dartilla.bookkeeper.domain.Author;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("JPA репозиторий для работы с авторами должен")
+@DisplayName("репозиторий для работы с авторами должен")
 @DataJpaTest
-@Import({AuthorRepositoryJpa.class, DataSourceBeanConfig.class})
-class AuthorRepositoryJpaTest {
+@Import({DataSourceBeanConfig.class})
+class AuthorRepositoryTest {
 
     @Autowired
-    private AuthorRepositoryJpa authorRepo;
+    private AuthorRepository authorRepo;
 
     @DisplayName("сохранять автора")
     @Test
@@ -34,15 +34,14 @@ class AuthorRepositoryJpaTest {
     @Test
     public void shouldGetById() {
         Author expected = new Author(1L, "Кастанеда К.");
-        assertThat(authorRepo.getById(expected.getId())).isEqualToComparingFieldByField(expected);
+        assertThat(authorRepo.findById(expected.getId())).get().isEqualToComparingFieldByField(expected);
     }
 
-    @DisplayName("получать null вместо автора по несущетвующе идентификатору")
+    @DisplayName("получать empty вместо автора по несущеcтвующему идентификатору")
     @Test
-    public void shouldGetNullByWrongId() {
+    public void shouldFindEmptyByWrongId() {
         Author expected = new Author(99L, "Кастанеда К.");
-        Author byId = authorRepo.getById(expected.getId());
-        assertThat(byId).isNull();
+        assertThat(authorRepo.findById(expected.getId())).isEmpty();
     }
 
     @DisplayName("находить автора по имени")

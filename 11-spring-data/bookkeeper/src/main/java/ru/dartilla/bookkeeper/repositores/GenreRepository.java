@@ -1,19 +1,15 @@
 package ru.dartilla.bookkeeper.repositores;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.dartilla.bookkeeper.domain.Genre;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-public interface GenreRepository {
-
-    Genre getById(Long id);
-
-    List<Genre> getAll();
+public interface GenreRepository extends JpaRepository<Genre, Long> {
 
     Optional<Genre> findByName(String name);
 
-    List<Genre> findByNames(Collection<String> name);
+    List<Genre> findByNameIn(Collection<String> name);
 }

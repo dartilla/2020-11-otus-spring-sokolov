@@ -11,10 +11,10 @@ import ru.dartilla.bookkeeper.domain.Comment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("JPA репозиторий для работы с комментариями должен")
+@DisplayName("репозиторий для работы с комментариями должен")
 @DataJpaTest
-@Import({CommentRepositoryJpa.class, DataSourceBeanConfig.class})
-class CommentRepositoryJpaTest {
+@Import({DataSourceBeanConfig.class})
+class CommentRepositoryTest {
 
     @Autowired
     private CommentRepository commentRepository;

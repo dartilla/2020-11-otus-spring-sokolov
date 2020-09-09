@@ -71,13 +71,13 @@ class BookServiceImplTest {
     public void shouldGetBooksOverview() {
         Script newWorld = new Script(1L, "Новый Мир", new Author(1L, "Неизвестных О."), Set.of(new Genre(1L, "Роман")), null);
         Script oldWorld = new Script(2L, "Старый Мир", new Author(1L, "Ренуар А."), Set.of(new Genre(2L, "Проза")), null);
-        when(bookRepository.getAll()).thenReturn(Arrays.asList(
+        when(bookRepository.findAll()).thenReturn(Arrays.asList(
                 new Book(1L, true, newWorld),
                 new Book(2L, false, newWorld),
                 new Book(3L, true, newWorld),
                 new Book(4L, true, oldWorld)));
         Collection<BookOverviewVo> booksOverviews = bookService.getBooksOverview();
-        verify(bookRepository, times(1)).getAll();
+        verify(bookRepository, times(1)).findAll();
         assertThat(booksOverviews).containsExactlyInAnyOrder(
                 new BookOverviewVo(newWorld.getId(), newWorld.getTitle(), newWorld.getAuthor().getName(), 2,
                         newWorld.getGenres().stream().map(Genre::getName).collect(toSet())),

@@ -1,19 +1,11 @@
 package ru.dartilla.bookkeeper.repositores;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.dartilla.bookkeeper.domain.Script;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface ScriptRepository {
+public interface ScriptRepository extends JpaRepository<Script, Long> {
 
-    Script save(Script book);
-
-    Script getById(Long id);
-
-    Optional<Script> findById(Long id);
-
-    List<Script> getAll();
-
-    Optional<Script> findByAuthorIdAndTitle(Long authorId, String title);
+    Optional<Script> findFirstByAuthorIdAndTitle(Long authorId, String title);
 }

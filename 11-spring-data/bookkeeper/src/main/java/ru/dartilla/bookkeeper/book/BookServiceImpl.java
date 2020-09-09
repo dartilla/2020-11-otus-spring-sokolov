@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
         Map<BookOverviewKey, BookOverviewVo> overviewMap = new TreeMap<>(Comparator
                 .comparing(BookOverviewKey::getAuthorName)
                 .thenComparing(BookOverviewKey::getTitle));
-        for (Book book : bookRepository.getAll()) {
+        for (Book book : bookRepository.findAll()) {
             Script script = book.getScript();
             BookOverviewVo bookOverview = overviewMap.computeIfAbsent(
                     new BookOverviewKey(script.getAuthor().getName(), script.getTitle()),

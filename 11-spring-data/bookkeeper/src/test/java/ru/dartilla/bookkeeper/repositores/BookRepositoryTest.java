@@ -14,22 +14,22 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("JPA репозиторий для работы с экземплярами книги должен")
+@DisplayName("репозиторий для работы с экземплярами книги должен")
 @DataJpaTest
-@Import({BookRepositoryJpa.class, DataSourceBeanConfig.class})
-class BookRepositoryJpaTest {
+@Import({DataSourceBeanConfig.class})
+class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
 
     @DisplayName("возвращать экземпляры книги")
     @Test
-    public void shouldGetAll() {
-        List<Book> books = bookRepository.getAll();
+    public void shouldFindAll() {
+        List<Book> books = bookRepository.findAll();
         assertThat(books).isNotEmpty();
     }
 
-    @DisplayName("находить в экземпляр книги в по рукописи")
+    @DisplayName("находить в экземпляр книги по рукописи")
     @Test
     public void shouldFindInStorageByScript() {
         Script script = new Script(1L, "Учение дона Хуана", null, null, null);

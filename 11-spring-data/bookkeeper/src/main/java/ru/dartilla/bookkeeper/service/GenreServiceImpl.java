@@ -22,11 +22,11 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<Genre> findGenreByNames(Collection<String> name) {
-        return genreRepository.findByNames(name);
+        return genreRepository.findByNameIn(name);
     }
 
     @Override
     public Collection<Genre> getGenres() {
-        return genreRepository.getAll();
+        return genreRepository.findAll();
     }
 }
