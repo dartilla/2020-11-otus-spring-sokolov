@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CommentInsertVo {
-    private final Long scriptId;
-    private final Long parentId;
+    private final String scriptId;
+    private final String parentId;
     private final String message;
 }

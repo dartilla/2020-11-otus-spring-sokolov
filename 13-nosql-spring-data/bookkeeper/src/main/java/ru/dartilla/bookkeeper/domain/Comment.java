@@ -3,8 +3,10 @@ package ru.dartilla.bookkeeper.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 
 /**
  * Коментарий к рукописи
@@ -12,23 +14,17 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "comment")
+@Document(collection = "comment")
 public class Comment {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "script_id")
+    @DBRef
     private Script script;
 
-    @OneToOne
-    @JoinColumn(name = "parent_id")
+    @DBRef
     private Comment parent;
 
-    @Column(name = "message")
     private String message;
 }

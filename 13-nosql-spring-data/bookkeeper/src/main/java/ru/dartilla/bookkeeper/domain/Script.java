@@ -1,9 +1,9 @@
 package ru.dartilla.bookkeeper.domain;
 
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -14,30 +14,15 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"genres", "comments"})
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "script")
+@Document(collection = "script")
 public class Script {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(name = "title")
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
     private Author author;
 
-    @BatchSize(size = 1000)
-    @ManyToMany
-    @JoinTable(name = "script_genre",
-            joinColumns = @JoinColumn(name = "script_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id")
-    )
     private Set<Genre> genres;
-
-    @OneToMany(mappedBy = "script")
-    private Set<Comment> comments;
 }

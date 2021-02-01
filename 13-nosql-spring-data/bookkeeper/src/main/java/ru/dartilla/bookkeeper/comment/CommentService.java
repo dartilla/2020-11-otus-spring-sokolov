@@ -5,7 +5,7 @@ import ru.dartilla.bookkeeper.comment.vo.CommentTree;
 
 public interface CommentService {
 
-    CommentTree findByScript(Long scriptId);
+    CommentTree findByScript(String scriptId);
 
     void addComment(CommentInsertVo comment);
 }

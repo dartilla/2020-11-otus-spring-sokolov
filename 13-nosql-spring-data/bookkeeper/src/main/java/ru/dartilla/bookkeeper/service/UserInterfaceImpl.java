@@ -11,7 +11,6 @@ import ru.dartilla.bookkeeper.comment.vo.CommentTree;
 import ru.dartilla.bookkeeper.domain.Script;
 import ru.dartilla.bookkeeper.script.vo.ScriptSearchVo;
 import ru.dartilla.bookkeeper.comment.vo.CommentNode;
-import ru.dartilla.bookkeeper.domain.Comment;
 import ru.dartilla.bookkeeper.domain.Genre;
 import ru.dartilla.bookkeeper.exception.IdIsNotValidException;
 import ru.dartilla.bookkeeper.exception.BookkeeperException;
@@ -44,7 +43,7 @@ public class UserInterfaceImpl implements UserInterface {
     public ScriptSearchVo readScriptSearchVo() {
         PrintStream out = inOut.getOut();
         Scanner in = inOut.getIn();
-        out.println("Введите инициалы и фамилию автора:");
+        out.println("Введите фамилию и инициалы автора:");
         String authorName = in.nextLine();
         out.println("Введите наименование книги:");
         String bookTitle = in.nextLine();
@@ -67,34 +66,32 @@ public class UserInterfaceImpl implements UserInterface {
     }
 
     @Override
-    public void printBookBorrowed(Long id) {
-        inOut.getOut().println(String.format("Вы взяли из библиотеки книгу с id=%d. Не забудьте вернуть ее обратно!", id));
+    public void printBookBorrowed(String id) {
+        inOut.getOut().println(String.format("Вы взяли из библиотеки книгу с id=%s. Не забудьте вернуть ее обратно!", id));
     }
 
     @Override
-    public Long readBookId() throws BookkeeperException {
+    public String readBookId() throws BookkeeperException {
         PrintStream out = inOut.getOut();
         Scanner in = inOut.getIn();
         out.println("Введите идентификатор экземпляра книги:");
-        String bookIdStr = in.nextLine();
-        try {
-            return Long.valueOf(bookIdStr);
-        } catch (Exception e) {
+        String bookId = in.nextLine();
+        if (StringUtils.isEmpty(bookId)) {
             throw new IdIsNotValidException();
         }
+        return bookId;
     }
 
     @Override
-    public Long readScriptId() throws BookkeeperException {
+    public String readScriptId() throws BookkeeperException {
         PrintStream out = inOut.getOut();
         Scanner in = inOut.getIn();
         out.println("Введите идентификатор книги:");
-        String scriptIdStr = in.nextLine();
-        try {
-            return Long.valueOf(scriptIdStr);
-        } catch (Exception e) {
+        String scriptId = in.nextLine();
+        if (StringUtils.isEmpty(scriptId)) {
             throw new IdIsNotValidException();
         }
+        return scriptId;
     }
 
     @Override
@@ -140,17 +137,9 @@ public class UserInterfaceImpl implements UserInterface {
     public CommentInsertVo readComment() {
         PrintStream out = inOut.getOut();
         Scanner in = inOut.getIn();
-        Long scriptId = readScriptId();
+        String scriptId = readScriptId();
         out.println("Введите идентификатор комментария, на который вы отвечаете (пусто если вы не отвечаете):");
-        Long parentId = null;
-        String parentIdStr = in.nextLine();
-        if (!StringUtils.isEmpty(parentIdStr)) {
-            try {
-                parentId = Long.valueOf(parentIdStr);
-            } catch (Exception e) {
-                throw new IdIsNotValidException();
-            }
-        }
+        String parentId = in.nextLine();
         out.println("Введите сообщение комментария:");
         String message = in.nextLine();
         if (StringUtils.isEmpty(message)) {
@@ -159,7 +148,7 @@ public class UserInterfaceImpl implements UserInterface {
         return new CommentInsertVo(scriptId, parentId, message);
     }
 
-    private void printCommentMessage(int level, String message, Long id) {
+    private void printCommentMessage(int level, String message, String id) {
         PrintStream out = inOut.getOut();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < level; i++) {

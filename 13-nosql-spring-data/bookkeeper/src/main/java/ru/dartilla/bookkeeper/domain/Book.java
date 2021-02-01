@@ -3,8 +3,9 @@ package ru.dartilla.bookkeeper.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Книга (конкретный экземпляр)
@@ -12,23 +13,14 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "book")
-@NamedEntityGraph(name = "bookEntityGraphWithScriptAndAuthor",
-        attributeNodes = {@NamedAttributeNode(value = "script", subgraph = "scriptWithAuthor")},
-        subgraphs = {@NamedSubgraph(name = "scriptWithAuthor", attributeNodes = @NamedAttributeNode("author"))})
+@Document(collection = "book")
 public class Book {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(name = "in_storage", columnDefinition = "INTEGER")
     private boolean inStorage;
 
-    @ManyToOne
-    @BatchSize(size = 950)
-    @JoinColumn(name = "script_id")
+    @DBRef
     private Script script;
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.dartilla.bookkeeper.book.vo.BookInsertVo;
 import ru.dartilla.bookkeeper.book.vo.BookOverviewVo;
 import ru.dartilla.bookkeeper.script.ScriptService;
@@ -33,7 +32,6 @@ public class BookServiceImpl implements BookService {
     private final ScriptService scriptService;
 
     @Override
-    @Transactional
     public void addBook(BookInsertVo bookInsertVo) throws BookkeeperException {
         Author author = authorService.acquireAuthor(bookInsertVo.getAuthorName());
         Set<Genre> genres = new HashSet<>(genreService.findGenreByNames(bookInsertVo.getGenreNames()));
@@ -44,7 +42,7 @@ public class BookServiceImpl implements BookService {
             throw new GenreNotFoundException(absentGenre.get());
         }
         Script script = scriptService.findByAuthorIdAndTitle(author.getId(), bookInsertVo.getTitle())
-                .orElseGet(() -> new Script(null, bookInsertVo.getTitle(), author, genres, null));
+                .orElseGet(() -> new Script(null, bookInsertVo.getTitle(), author, genres));
         if (script.getId() == null) {
             scriptService.save(script);
         }
@@ -52,7 +50,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Collection<BookOverviewVo> getBooksOverview() {
         Map<BookOverviewKey, BookOverviewVo> overviewMap = new TreeMap<>(Comparator
                 .comparing(BookOverviewKey::getAuthorName)
@@ -77,25 +74,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
-    public Long borrowBook(ScriptSearchVo bookToSearch) throws BookkeeperException {
+    public String borrowBook(ScriptSearchVo bookToSearch) throws BookkeeperException {
         Author author = authorService.findAuthor(bookToSearch.getAuthorName())
-                .orElseThrow(() -> new AuthorNotFoundException());
+                .orElseThrow(AuthorNotFoundException::new);
         Script script = scriptService.findByAuthorIdAndTitle(author.getId(), bookToSearch.getTitle())
-                .orElseThrow(() -> new ScriptIsNotFound());
-        Book book = bookRepository.findInStorageByScript(script.getId())
-                .orElseThrow(() -> new AvailableBookIsNotFound());
+                .orElseThrow(ScriptIsNotFound::new);
+        Book book = bookRepository.findFirstByScriptAndInStorageTrue(script.getId())
+                .orElseThrow(AvailableBookIsNotFound::new);
         book.setInStorage(false);
+        bookRepository.save(book);
         return book.getId();
     }
 
     @Override
-    @Transactional
-    public void returnBook(Long id) throws BookkeeperException {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException());
+    public void returnBook(String id) throws BookkeeperException {
+        Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
         if (book.isInStorage()) {
             throw new BookInStorageException();
         }
         book.setInStorage(true);
+        bookRepository.save(book);
     }
 }

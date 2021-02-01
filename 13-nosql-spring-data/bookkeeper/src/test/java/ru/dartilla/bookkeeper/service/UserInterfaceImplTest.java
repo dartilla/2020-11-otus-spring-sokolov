@@ -54,7 +54,7 @@ class UserInterfaceImplTest {
         when(inOut.getIn()).thenReturn(new Scanner(new ByteArrayInputStream(String.join(System.lineSeparator(), data).getBytes())));
         assertThat(userInterface.readBookInsertVo()).isEqualToComparingFieldByField(expected);
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
-        assertThat(outResult).contains("наименование книги", "Введите инициалы и фамилию автора", "жанр");
+        assertThat(outResult).contains("наименование книги", "Введите фамилию и инициалы автора", "жанр");
     }
 
     @DisplayName("позволяет ввести книгу для поиска")
@@ -66,14 +66,14 @@ class UserInterfaceImplTest {
         when(inOut.getIn()).thenReturn(new Scanner(new ByteArrayInputStream(String.join(System.lineSeparator(), data).getBytes())));
         assertThat(userInterface.readScriptSearchVo()).isEqualToComparingFieldByField(expected);
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
-        assertThat(outResult).contains("наименование книги", "инициалы и фамилию автора");
+        assertThat(outResult).contains("наименование книги", "фамилию и инициалы автора");
     }
 
     @DisplayName("позволяет вывести статистику по книгам")
     @Test
     public void printBooks() {
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
-        BookOverviewVo expected = new BookOverviewVo(1L, "Книга 1", "Тютчев А.", 2, Set.of("Стихи, Проза"));
+        BookOverviewVo expected = new BookOverviewVo("1", "Книга 1", "Тютчев А.", 2, Set.of("Стихи, Проза"));
         userInterface.printBooks(Arrays.asList(expected));
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
         assertThat(outResult).contains("Доступно для выдачи");
@@ -86,24 +86,16 @@ class UserInterfaceImplTest {
     @Test
     public void shouldReadValidId() {
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
-        Long expected = 22L;
-        when(inOut.getIn()).thenReturn(new Scanner(new ByteArrayInputStream(expected.toString().getBytes())));
+        String expected = "22";
+        when(inOut.getIn()).thenReturn(new Scanner(new ByteArrayInputStream(expected.getBytes())));
         assertThat(userInterface.readBookId()).isEqualTo(expected);
-    }
-
-    @DisplayName("выкидывает исключение при не валидном идентификаторе книги")
-    @Test
-    public void shouldThrowWhileReadNotValidId() {
-        when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
-        when(inOut.getIn()).thenReturn(new Scanner(new ByteArrayInputStream("bla".getBytes())));
-        assertThatThrownBy(() -> userInterface.readBookId()).isInstanceOf(IdIsNotValidException.class);
     }
 
     @DisplayName("позволяет вывести существующие жанры")
     @Test
     public void shouldPrintGenres() {
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
-        List<Genre> expectedList = Arrays.asList(new Genre(22L, "Дорожное приключение"), new Genre(33L, "Роман"));
+        List<Genre> expectedList = Arrays.asList(new Genre("22", "Дорожное приключение"), new Genre("33", "Роман"));
         userInterface.printGenres(expectedList);
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
         assertThat(outResult).contains(expectedList.get(0).getName(), expectedList.get(1).getName());
@@ -115,13 +107,13 @@ class UserInterfaceImplTest {
     public void shouldPrintComments() {
         when(inOut.getOut()).thenReturn(new PrintStream(outByteArrayStream));
         List<CommentNode> rootNodes = Arrays.asList(
-                new CommentNode(1L, "firstMessage", Arrays.asList(
-                        new CommentNode(2L, "firstChildMessage", emptyList()),
-                        new CommentNode(3L, "secondChildMessage", Arrays.asList(
-                                new CommentNode(4L, "firstGrandChildMessage", emptyList())
+                new CommentNode("1", "firstMessage", Arrays.asList(
+                        new CommentNode("2", "firstChildMessage", emptyList()),
+                        new CommentNode("3", "secondChildMessage", Arrays.asList(
+                                new CommentNode("4", "firstGrandChildMessage", emptyList())
                         ))))
         );
-        CommentTree commentTree = new CommentTree(new Script(1L, "Новая заря", new Author(1L, "Неизветсных О."), null, null), rootNodes);
+        CommentTree commentTree = new CommentTree(new Script("1", "Новая заря", new Author("1", "Неизветсных О."), null), rootNodes);
         userInterface.printComments(commentTree);
         String outResult = new String(outByteArrayStream.toByteArray(), StandardCharsets.UTF_8);
         System.out.println(outResult);

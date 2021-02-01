@@ -45,15 +45,15 @@ class CommentServiceImplTest {
     @DisplayName("находить комментарии для книги")
     @Test
     public void shouldFindByBook() {
-        Author author = new Author(22L, "Неизветсных О.");
-        Script script = new Script(100L, "моя книга", author, null, new HashSet<>());
-        Comment first = new Comment(1L, script, null, "first");
-        Comment firstChild = new Comment(2L, script, first, "firstChild");
-        Comment secondChild = new Comment(3L, script, first, "secondChild");
-        Comment firstGrand = new Comment(4L, script, firstChild, "firstGrand");
-        Comment second = new Comment(5L, script, null, "second");
-        script.getComments().addAll(Arrays.asList(first, firstChild, secondChild, firstGrand, second));
+        Author author = new Author("22", "Неизветсных О.");
+        Script script = new Script("100", "моя книга", author, null);
+        Comment first = new Comment("1", script, null, "first");
+        Comment firstChild = new Comment("2", script, first, "firstChild");
+        Comment secondChild = new Comment("3", script, first, "secondChild");
+        Comment firstGrand = new Comment("4", script, firstChild, "firstGrand");
+        Comment second = new Comment("5", script, null, "second");
         when(scriptService.findById(script.getId())).thenReturn(Optional.of(script));
+        when(commentRepository.findByScriptId(script.getId())).thenReturn(Arrays.asList(first, firstChild, secondChild, firstGrand, second));
 
         CommentTree commentTree = commentService.findByScript(script.getId());
         List<CommentNode> comments = commentTree.getNodes();
@@ -72,7 +72,7 @@ class CommentServiceImplTest {
     @DisplayName("добавлять первый комментарий")
     @Test
     public void shouldAddRootComment() {
-        Script script = new Script(100L, "моя книга", null, null, null);
+        Script script = new Script("100", "моя книга", null, null);
         Comment newComment = new Comment(null, script, null, "new");
         when(scriptService.findById(script.getId())).thenReturn(Optional.of(script));
         commentService.addComment(new CommentInsertVo(script.getId(), null, newComment.getMessage()));
@@ -85,9 +85,9 @@ class CommentServiceImplTest {
     @DisplayName("добавлять дочерний комментарий")
     @Test
     public void shouldAddChildComment() {
-        Script script = new Script(100L, "моя книга", null, null, null);
-        Comment parentComment = new Comment(2L, script, null, "root");
-        Comment newComment = new Comment(3L, script, parentComment, "new");
+        Script script = new Script("100", "моя книга", null, null);
+        Comment parentComment = new Comment("2", script, null, "root");
+        Comment newComment = new Comment("3", script, parentComment, "new");
         when(scriptService.findById(script.getId())).thenReturn(Optional.of(script));
         when(commentRepository.findById(parentComment.getId())).thenReturn(Optional.of(parentComment));
 

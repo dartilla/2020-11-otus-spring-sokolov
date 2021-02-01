@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CommentNode {
-    private final Long id;
+    private final String id;
     private final String message;
     private final List<CommentNode> children;
 }

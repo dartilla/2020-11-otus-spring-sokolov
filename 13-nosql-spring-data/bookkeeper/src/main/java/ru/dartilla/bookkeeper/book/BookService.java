@@ -9,6 +9,6 @@ import java.util.Collection;
 public interface BookService {
     void addBook(BookInsertVo book);
     Collection<BookOverviewVo> getBooksOverview();
-    Long borrowBook(ScriptSearchVo book);
-    void returnBook(Long id);
+    String borrowBook(ScriptSearchVo book);
+    void returnBook(String id);
 }

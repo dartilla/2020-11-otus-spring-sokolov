@@ -39,7 +39,7 @@ public class BookkeeperShell {
 
     @ShellMethod(value = "Borrow book", key = {"borrowBook"})
     public void borrowBook() {
-        Long id = bookService.borrowBook(ui.readScriptSearchVo());
+        String id = bookService.borrowBook(ui.readScriptSearchVo());
         ui.printBookBorrowed(id);
     }
 

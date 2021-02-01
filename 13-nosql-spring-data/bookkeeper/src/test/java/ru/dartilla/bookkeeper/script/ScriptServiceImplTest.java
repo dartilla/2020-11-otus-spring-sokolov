@@ -31,7 +31,7 @@ class ScriptServiceImplTest {
     @DisplayName("находить экземпляр книги по id")
     @Test
     public void shouldFindById() {
-        Script expected = new Script(1L, "Новый мир", null, null, null);
+        Script expected = new Script("1", "Новый мир", null, null);
         when(scriptRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
         assertThat(scriptService.findById(expected.getId()).get()).isEqualTo(expected);
     }

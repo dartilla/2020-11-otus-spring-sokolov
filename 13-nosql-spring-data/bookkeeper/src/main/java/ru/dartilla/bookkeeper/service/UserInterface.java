@@ -20,11 +20,11 @@ public interface UserInterface {
 
     void printException(Exception ex);
 
-    void printBookBorrowed(Long id);
+    void printBookBorrowed(String id);
 
-    Long readBookId();
+    String readBookId();
 
-    Long readScriptId();
+    String readScriptId();
 
     void printBookReturned();
 
