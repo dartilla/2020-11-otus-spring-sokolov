@@ -17,7 +17,7 @@ public class ScriptServiceImpl implements ScriptService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Script> findByAuthorIdAndTitle(Long authorId, String title) {
-        return scriptRepository.findByAuthorIdAndTitle(authorId, title);
+        return scriptRepository.findFirstByAuthorIdAndTitle(authorId, title);
     }
 
     @Override
