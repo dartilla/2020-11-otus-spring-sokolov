@@ -2,6 +2,12 @@
 <configuration>
     <property name="LOGS" value="./target/logs"/>
 
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </layout>
+    </appender>
+
     <appender name="heap" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS}/heap.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -33,6 +39,7 @@
 
     <root level="debug">
         <appender-ref ref="heap"/>
+        <appender-ref ref="console"/>
     </root>
 
     <logger name="org.hibernate.SQL" level="ERROR"/>
@@ -40,5 +47,9 @@
     <logger name="net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener" level="DEBUG" additivity="false">
         <appender-ref ref="heap" />
         <appender-ref ref="sql" />
+    </logger>
+
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+        <level value="DEBUG" />
     </logger>
 </configuration>

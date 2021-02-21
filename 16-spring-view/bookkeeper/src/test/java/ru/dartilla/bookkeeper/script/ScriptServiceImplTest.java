@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.dartilla.bookkeeper.domain.Script;
 import ru.dartilla.bookkeeper.repositores.ScriptRepository;
+import ru.dartilla.bookkeeper.service.AuthorService;
+import ru.dartilla.bookkeeper.service.GenreService;
 
 import java.util.Optional;
 
@@ -21,11 +23,17 @@ class ScriptServiceImplTest {
     @Mock
     private ScriptRepository scriptRepository;
 
+    @Mock
+    private GenreService genreService;
+
+    @Mock
+    private AuthorService authorService;
+
     private ScriptServiceImpl scriptService;
 
     @BeforeEach
     private void setUp() {
-        scriptService = new ScriptServiceImpl(scriptRepository);
+        scriptService = new ScriptServiceImpl(scriptRepository, authorService, genreService);
     }
 
     @DisplayName("находить экземпляр книги по id")
@@ -35,5 +43,4 @@ class ScriptServiceImplTest {
         when(scriptRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
         assertThat(scriptService.findById(expected.getId()).get()).isEqualTo(expected);
     }
-
 }

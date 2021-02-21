@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.dartilla.bookkeeper.book.vo.BookInsertVo;
+import ru.dartilla.bookkeeper.script.vo.ScriptDataVo;
 import ru.dartilla.bookkeeper.book.vo.BookOverviewVo;
 import ru.dartilla.bookkeeper.script.ScriptService;
 import ru.dartilla.bookkeeper.script.vo.ScriptSearchVo;
@@ -52,16 +52,16 @@ class BookServiceImplTest {
 
     @BeforeEach
     private void setUp() {
-        bookService = new BookServiceImpl(bookRepository, authorService, genreService, scriptService);
+        bookService = new BookServiceImpl(bookRepository, authorService, scriptService);
     }
 
     @DisplayName("добавлять книгу")
     @Test
     public void shouldAddBook() {
-        BookInsertVo expected = new BookInsertVo("Книга 1", "Тютчев А.", Set.of("Фантастика"));
+        ScriptDataVo expected = new ScriptDataVo(null, "Книга 1", "Тютчев А.", Set.of("Фантастика"));
         Author author = new Author(22L, expected.getAuthorName());
-        when(authorService.acquireAuthor(any())).thenReturn(author);
-        when(genreService.findGenreByNames(any())).thenReturn(Arrays.asList(new Genre(22L, "Фантастика")));
+        when(scriptService.acquireScript(any())).thenReturn(new Script(99L, expected.getTitle(), author,
+                Set.of(new Genre(22L, "Фантастика")), null));
         bookService.addBook(expected);
         verify(bookRepository, times(1)).save(any());
     }
