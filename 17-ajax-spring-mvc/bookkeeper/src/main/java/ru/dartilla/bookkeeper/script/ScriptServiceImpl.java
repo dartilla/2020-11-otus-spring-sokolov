@@ -64,7 +64,7 @@ public class ScriptServiceImpl implements ScriptService {
             script.setTitle(scriptDataVo.getTitle());
         } else {
             script = findByAuthorIdAndTitle(author.getId(), scriptDataVo.getTitle())
-                    .orElseGet(() -> new Script(null, scriptDataVo.getTitle(), author, genres, null));
+                    .orElseGet(() -> new Script(null, scriptDataVo.getTitle(), author, genres));
         }
         save(script);
         return script;

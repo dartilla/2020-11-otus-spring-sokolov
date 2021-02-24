@@ -12,7 +12,6 @@ import ru.dartilla.bookkeeper.domain.Script;
 import ru.dartilla.bookkeeper.domain.Genre;
 
 
-import java.util.Comparator;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
@@ -28,7 +27,7 @@ class ScriptRepositoryTest {
     @DisplayName("сохранять новую рукопись")
     @Test
     public void shouldSaveNew() {
-        Script expected = new Script(null, "Новая книга", new Author(1L, "Кастанеда К."), Set.of(new Genre(1L, "Мистика")), null);
+        Script expected = new Script(null, "Новая книга", new Author(1L, "Кастанеда К."), Set.of(new Genre(1L, "Мистика")));
         scriptRepository.save(expected);
         Script actual = scriptRepository.findFirstByAuthorIdAndTitle(
                 expected.getAuthor().getId(), expected.getTitle()).stream().findFirst().get();
@@ -39,7 +38,7 @@ class ScriptRepositoryTest {
     @DisplayName("обновлять существующую рукопись")
     @Test
     public void shouldUpdateExisting() {
-        Script expected = new Script(1L, "Новый заголовок", new Author(2L, null), Set.of(new Genre(2L, null)), null);
+        Script expected = new Script(1L, "Новый заголовок", new Author(2L, null), Set.of(new Genre(2L, null)));
         scriptRepository.save(expected);
         Script actual = scriptRepository.findById(expected.getId()).get();
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "author", "genres");
@@ -51,7 +50,7 @@ class ScriptRepositoryTest {
     @DisplayName("находить рукопись по идентификатору")
     @Test
     public void shouldFindById() {
-        Script expected = new Script(1L, "Учение дона Хуана", new Author(1L, "Кастанеда К."), Set.of(new Genre(1L, "Мистика")), null);
+        Script expected = new Script(1L, "Учение дона Хуана", new Author(1L, "Кастанеда К."), Set.of(new Genre(1L, "Мистика")));
         assertThat(scriptRepository.findById(expected.getId()).get()).isEqualToComparingOnlyGivenFields(expected,
                 "id", "title", "author", "genres");
     }
@@ -59,14 +58,14 @@ class ScriptRepositoryTest {
     @DisplayName("находить пустую рукопись по несуществующему идентификатору")
     @Test
     public void shouldFindEmptyByWrongId() {
-        Script expected = new Script(-999L, "Учение дона Хуана", new Author(1L, "Кастанеда К."), Set.of(new Genre(1L, "Мистика")), null);
+        Script expected = new Script(-999L, "Учение дона Хуана", new Author(1L, "Кастанеда К."), Set.of(new Genre(1L, "Мистика")));
         assertThat(scriptRepository.findById(expected.getId())).isEmpty();
     }
 
     @DisplayName("находить рукопись по автору и заголовку")
     @Test
     public void shouldFindByAuthorAndTitle() {
-        Script expected = new Script(2L, "Отдельная реальность", new Author(1L, "Кастанеда К."), Set.of(new Genre(1L, "Мистика")), null);
+        Script expected = new Script(2L, "Отдельная реальность", new Author(1L, "Кастанеда К."), Set.of(new Genre(1L, "Мистика")));
         assertThat(scriptRepository.findFirstByAuthorIdAndTitle(expected.getAuthor().getId(), expected.getTitle()
                 ).get()).isEqualToComparingOnlyGivenFields(expected, "id", "title", "author", "genres");
     }
@@ -75,17 +74,5 @@ class ScriptRepositoryTest {
     @Test
     public void shouldFindAll() {
         assertThat(scriptRepository.findAll()).isNotEmpty();
-    }
-
-    @DisplayName("находить комментраии для книги")
-    @Test
-    public void shouldContainComments() {
-        Set<Comment> comments = scriptRepository.findById(1L).get().getComments();
-        assertThat(comments.size()).isEqualTo(3);
-        assertThat(comments).usingElementComparator(Comparator.comparing(Comment::getMessage))
-                .containsExactlyInAnyOrder(new Comment(null, null, null, "Что курил автор?"),
-                        new Comment(null, null, null, "Читай дальше, там написано"),
-                        new Comment(null, null, null, "Какая гадость эта ваша заливная рыба")
-                        );
     }
 }

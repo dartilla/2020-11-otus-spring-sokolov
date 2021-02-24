@@ -61,7 +61,7 @@ class BookServiceImplTest {
         ScriptDataVo expected = new ScriptDataVo(null, "Книга 1", "Тютчев А.", Set.of("Фантастика"));
         Author author = new Author(22L, expected.getAuthorName());
         when(scriptService.acquireScript(any())).thenReturn(new Script(99L, expected.getTitle(), author,
-                Set.of(new Genre(22L, "Фантастика")), null));
+                Set.of(new Genre(22L, "Фантастика"))));
         bookService.addBook(expected);
         verify(bookRepository, times(1)).save(any());
     }
@@ -69,8 +69,8 @@ class BookServiceImplTest {
     @DisplayName("возвращает статистику по книгам")
     @Test
     public void shouldGetBooksOverview() {
-        Script newWorld = new Script(1L, "Новый Мир", new Author(1L, "Неизвестных О."), Set.of(new Genre(1L, "Роман")), null);
-        Script oldWorld = new Script(2L, "Старый Мир", new Author(1L, "Ренуар А."), Set.of(new Genre(2L, "Проза")), null);
+        Script newWorld = new Script(1L, "Новый Мир", new Author(1L, "Неизвестных О."), Set.of(new Genre(1L, "Роман")));
+        Script oldWorld = new Script(2L, "Старый Мир", new Author(1L, "Ренуар А."), Set.of(new Genre(2L, "Проза")));
         when(bookRepository.findAll()).thenReturn(Arrays.asList(
                 new Book(1L, true, newWorld),
                 new Book(2L, false, newWorld),
@@ -96,7 +96,7 @@ class BookServiceImplTest {
     @DisplayName("позволяет вернуть книгу")
     @Test
     public void shouldReturnBook() {
-        Script script = new Script(2L, "новая книга", new Author(1L, null), Set.of(new Genre(1L, null)), null);
+        Script script = new Script(2L, "новая книга", new Author(1L, null), Set.of(new Genre(1L, null)));
         Book book = new Book(1L, false, script);
         when(bookRepository.findById(book.getId())).thenReturn(Optional.of(book));
         bookService.returnBook(book.getId());
@@ -116,7 +116,7 @@ class BookServiceImplTest {
         ScriptSearchVo bookToSearch = new ScriptSearchVo("Новая", "Автор");
         Author author = new Author(22L, bookToSearch.getAuthorName());
         when(authorService.findAuthor(bookToSearch.getAuthorName())).thenReturn(Optional.of(author));
-        when(scriptService.findByAuthorIdAndTitle(any(), any())).thenReturn(Optional.of(new Script(null, null, null, null, null)));
+        when(scriptService.findByAuthorIdAndTitle(any(), any())).thenReturn(Optional.of(new Script(null, null, null, null)));
         assertThatThrownBy(() -> bookService.borrowBook(bookToSearch)).isInstanceOf(AvailableBookIsNotFound.class);
     }
 
@@ -126,7 +126,7 @@ class BookServiceImplTest {
         ScriptSearchVo bookToSearch = new ScriptSearchVo("Новая", "Автор");
         Author author = new Author(22L, bookToSearch.getAuthorName());
         when(authorService.findAuthor(bookToSearch.getAuthorName())).thenReturn(Optional.of(author));
-        Script script = new Script(11L, bookToSearch.getTitle(), author, Set.of(new Genre(22L, null)), null);
+        Script script = new Script(11L, bookToSearch.getTitle(), author, Set.of(new Genre(22L, null)));
         Book book = new Book(1L, true, script);
         when(scriptService.findByAuthorIdAndTitle(author.getId(), bookToSearch.getTitle()))
                 .thenReturn(Optional.of(script));

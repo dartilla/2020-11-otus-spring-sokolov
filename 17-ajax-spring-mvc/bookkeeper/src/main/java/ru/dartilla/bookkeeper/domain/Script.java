@@ -37,7 +37,4 @@ public class Script {
             inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id")
     )
     private Set<Genre> genres;
-
-    @OneToMany(mappedBy = "script")
-    private Set<Comment> comments;
 }

@@ -30,8 +30,8 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     public CommentTree findByScript(Long scriptId) {
         List<CommentNode> rootNodeList = new ArrayList<>();
-        Script script = scriptService.findById(scriptId).orElseThrow(() -> new ScriptIsNotFoundException());
-        Collection<Comment> allComments = script.getComments().stream().sorted(Comparator.comparing(Comment::getId))
+        Script script = scriptService.findById(scriptId).orElseThrow(ScriptIsNotFoundException::new);
+        Collection<Comment> allComments = commentRepository.findByScriptId(scriptId).stream().sorted(Comparator.comparing(Comment::getId))
                 .collect(toList());
         Map<Long, CommentNode> nodeByIdIndex = allComments.stream().collect(toMap(Comment::getId,
                 vo -> new CommentNode(vo.getId(), vo.getMessage(), new ArrayList<>())));
