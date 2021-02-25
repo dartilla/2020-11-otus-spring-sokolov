@@ -1,4 +1,4 @@
-package ru.dartilla.bookkeeper.controller;
+package ru.dartilla.bookkeeper.rest;
 
 import lombok.Data;
 

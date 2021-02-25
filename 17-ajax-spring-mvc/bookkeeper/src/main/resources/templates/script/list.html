@@ -4,11 +4,24 @@
     <meta charset="UTF-8"/>
     <title>List of all scripts</title>
     <link rel="stylesheet" href="../../webapp/css/common.css" th:href="@{/css/common.css}">
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "/rest/script"
+            }).then(function(data) {
+                for (script of data) {
+                    $('#scriptTableBody').append(buildScriptRow(script));
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <h1>Scripts:</h1>
 
-<table class="persons">
+<table class="scripts">
     <thead>
     <tr>
         <th>ID</th>
@@ -16,22 +29,12 @@
         <th>Author</th>
     </tr>
     </thead>
-    <tbody>
-    <tr th:each="script : ${scripts}">
-        <td th:text="${script.id}">1</td>
-        <td th:text="${script.title}">Колобок</td>
-        <td th:text="${script.author.name}">Народная</td>
-        <td>
-            <a href="edit.html" th:href="@{/script/edit/(id=${script.id})}">Edit</a>
-        </td>
-        <td>
-            <a href="delete.html" th:href="@{/script/delete/(id=${script.id})}">Delete</a>
-        </td>
-    </tr>
+    <tbody id="scriptTableBody">
     </tbody>
 </table>
 <div class="singleLinkDiv">
-    <a href="add.html" th:href="@{/script/add}">Add</a>
+    <a href="javascript:void(0)" id="addScriptLink" class="scriptLink" onclick="buildAddScriptForm()">Add script</a>
 </div>
+
 </body>
 </html>
