@@ -8,15 +8,15 @@ import java.util.Optional;
 
 public interface ScriptService {
 
-    Optional<Script> findByAuthorIdAndTitle(Long authorId, String title);
+    Optional<Script> findByAuthorIdAndTitle(String authorId, String title);
 
     Script save(Script script);
 
-    Optional<Script> findById(Long id);
+    Optional<Script> findById(String id);
 
     Script acquireScript(ScriptDataVo scriptDataVo);
 
     List<Script> findAll();
 
-    void deleteById(Long id);
+    void deleteById(String id);
 }

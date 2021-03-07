@@ -1,7 +1,8 @@
 spring:
   data:
     mongodb:
-      database: bookkeeper
+      port: 0
+      database: testbookkeeper
 
 mongock:
   #  runner-type: "ApplicationRunner" # default

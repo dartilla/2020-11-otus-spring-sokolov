@@ -2,14 +2,13 @@ package ru.dartilla.bookkeeper.script;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.dartilla.bookkeeper.exception.ScriptIsNotFoundException;
-import ru.dartilla.bookkeeper.script.vo.ScriptDataVo;
 import ru.dartilla.bookkeeper.domain.Author;
 import ru.dartilla.bookkeeper.domain.Genre;
 import ru.dartilla.bookkeeper.domain.Script;
 import ru.dartilla.bookkeeper.exception.GenreNotFoundException;
+import ru.dartilla.bookkeeper.exception.ScriptIsNotFoundException;
 import ru.dartilla.bookkeeper.repositores.ScriptRepository;
+import ru.dartilla.bookkeeper.script.vo.ScriptDataVo;
 import ru.dartilla.bookkeeper.service.AuthorService;
 import ru.dartilla.bookkeeper.service.GenreService;
 
@@ -29,20 +28,17 @@ public class ScriptServiceImpl implements ScriptService {
     private final GenreService genreService;
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Script> findByAuthorIdAndTitle(Long authorId, String title) {
-        return scriptRepository.findFirstByAuthorIdAndTitle(authorId, title);
+    public Optional<Script> findByAuthorIdAndTitle(String authorId, String title) {
+        return scriptRepository.findByAuthorIdAndTitle(authorId, title);
     }
 
     @Override
-    @Transactional
     public Script save(Script script) {
         return scriptRepository.save(script);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Script> findById(Long id) {
+    public Optional<Script> findById(String id) {
         return scriptRepository.findById(id);
     }
 
@@ -76,7 +72,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         scriptRepository.deleteById(id);
     }
 }

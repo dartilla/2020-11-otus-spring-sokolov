@@ -26,12 +26,12 @@ public class ScriptRestController {
     }
 
     @DeleteMapping("/rest/script/{id}")
-    public void deleteScript(@PathVariable Long id) {
+    public void deleteScript(@PathVariable String id) {
         scriptService.deleteById(id);
     }
 
     @GetMapping("/rest/script/{id}")
-    public Script getScript(@PathVariable Long id) {
+    public Script getScript(@PathVariable String id) {
         return scriptService.findById(id).orElseThrow(ScriptIsNotFoundException::new);
     }
 

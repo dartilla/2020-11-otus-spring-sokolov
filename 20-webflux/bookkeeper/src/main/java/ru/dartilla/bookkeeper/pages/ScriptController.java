@@ -14,7 +14,6 @@ public class ScriptController {
 
     @GetMapping("/script")
     public String listBook(Model model) {
-        model.addAttribute("scripts", scriptService.findAll());
         return "script/list";
     }
 }

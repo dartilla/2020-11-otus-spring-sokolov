@@ -32,7 +32,7 @@ class AuthorServiceImplTest {
     @DisplayName("возвращать созданного автора с новым идентификатором")
     @Test
     void shouldReturnInsertedAuthorWithNewId() {
-        long newId = 77L;
+        String newId = "77";
         when(authorRepository.save(any())).thenAnswer(ctx -> {
             Author argument = ctx.getArgument(0);
             argument.setId(newId);
@@ -47,7 +47,7 @@ class AuthorServiceImplTest {
     @DisplayName("возвращать существующего автора по ФИО")
     @Test
     void shouldGetExistingAuthorByFIO() {
-        Author expected = new Author(77L, "Пупкин В. В.");
+        Author expected = new Author("77", "Пупкин В. В.");
         when(authorRepository.findByName(expected.getName())).thenReturn(Optional.of(expected));
         Author actual = authorService.acquireAuthor(expected.getName());
         assertThat(actual).isEqualTo(expected);
@@ -57,7 +57,7 @@ class AuthorServiceImplTest {
     @Test
     void shouldAcquireNotExistingAuthor() {
         Author expected = new Author(null, "Пупкин В. В.");
-        long newId = 77L;
+        String newId = "77";
         when(authorRepository.save(any())).thenAnswer(ctx -> {
             Author argument = ctx.getArgument(0);
             argument.setId(newId);
@@ -70,7 +70,7 @@ class AuthorServiceImplTest {
     @DisplayName("обнаруживть автора (существующего находить)")
     @Test
     void shouldAcquireExistingAuthor() {
-        Author expected = new Author(77L, "Пупкин В. В.");
+        Author expected = new Author("77", "Пупкин В. В.");
         when(authorRepository.findByName(expected.getName())).thenReturn(Optional.of(expected));
         Author actual = authorService.acquireAuthor(expected.getName());
         assertThat(actual).isEqualToComparingFieldByField(expected);

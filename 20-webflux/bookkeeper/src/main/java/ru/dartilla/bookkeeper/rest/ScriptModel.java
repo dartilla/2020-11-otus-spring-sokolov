@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ScriptModel {
-    private Long id;
+    private String id;
     private String title;
     private String authorName;
     private String genreNames;
