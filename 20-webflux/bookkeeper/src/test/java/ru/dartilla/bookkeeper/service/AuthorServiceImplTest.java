@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
 import ru.dartilla.bookkeeper.domain.Author;
 import ru.dartilla.bookkeeper.repositores.AuthorRepository;
 
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,10 +36,10 @@ class AuthorServiceImplTest {
         when(authorRepository.save(any())).thenAnswer(ctx -> {
             Author argument = ctx.getArgument(0);
             argument.setId(newId);
-            return argument;
+            return Mono.just(argument);
         });
         Author expected = new Author(null, "Пупкин В. В.");
-        Author actual = authorService.insertAuthor(expected);
+        Author actual = authorService.insertAuthor(expected).block();
         assertThat(actual.getId()).isEqualTo(newId);
         assertThat(actual).isEqualToComparingOnlyGivenFields(expected, "name");
     }
@@ -48,8 +48,8 @@ class AuthorServiceImplTest {
     @Test
     void shouldGetExistingAuthorByFIO() {
         Author expected = new Author("77", "Пупкин В. В.");
-        when(authorRepository.findByName(expected.getName())).thenReturn(Optional.of(expected));
-        Author actual = authorService.acquireAuthor(expected.getName());
+        when(authorRepository.findByName(expected.getName())).thenReturn(Mono.just(expected));
+        Author actual = authorService.acquireAuthor(expected.getName()).block();
         assertThat(actual).isEqualTo(expected);
     }
 
@@ -58,12 +58,13 @@ class AuthorServiceImplTest {
     void shouldAcquireNotExistingAuthor() {
         Author expected = new Author(null, "Пупкин В. В.");
         String newId = "77";
+        when(authorRepository.findByName(any())).thenReturn(Mono.empty());
         when(authorRepository.save(any())).thenAnswer(ctx -> {
             Author argument = ctx.getArgument(0);
             argument.setId(newId);
-            return argument;
+            return Mono.just(argument);
         });
-        Author actual = authorService.acquireAuthor(expected.getName());
+        Author actual = authorService.acquireAuthor(expected.getName()).block();
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "id");
     }
 
@@ -71,8 +72,8 @@ class AuthorServiceImplTest {
     @Test
     void shouldAcquireExistingAuthor() {
         Author expected = new Author("77", "Пупкин В. В.");
-        when(authorRepository.findByName(expected.getName())).thenReturn(Optional.of(expected));
-        Author actual = authorService.acquireAuthor(expected.getName());
+        when(authorRepository.findByName(expected.getName())).thenReturn(Mono.just(expected));
+        Author actual = authorService.acquireAuthor(expected.getName()).block();
         assertThat(actual).isEqualToComparingFieldByField(expected);
         verify(authorRepository, times(0)).save(any());
     }

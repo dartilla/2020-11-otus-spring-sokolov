@@ -4,8 +4,8 @@ function buildScriptRow(script) {
         '<td>' + script.id + '</td>' +
         '<td>' + script.title + '</td>' +
         '<td>' + script.author.name + '</td>' +
-        '<td><a href="javascript:void(0)" class="scriptLink" onclick="editScript(' + script.id + ')">Edit</a></td>' +
-        '<td><a href="javascript:void(0)" class="scriptLink" onclick="deleteScript(' + script.id + ')">Delete</a></td>' +
+        '<td><a href="javascript:void(0)" class="scriptLink" onclick="editScript(\'' + script.id + '\')">Edit</a></td>' +
+        '<td><a href="javascript:void(0)" class="scriptLink" onclick="deleteScript(\'' + script.id + '\')">Delete</a></td>' +
         '</tr>'
 }
 

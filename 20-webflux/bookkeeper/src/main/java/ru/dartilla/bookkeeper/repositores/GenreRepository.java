@@ -1,15 +1,15 @@
 package ru.dartilla.bookkeeper.repositores;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.dartilla.bookkeeper.domain.Genre;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
-public interface GenreRepository extends MongoRepository<Genre, String> {
+public interface GenreRepository extends ReactiveMongoRepository<Genre, String> {
 
-    Optional<Genre> findByName(String name);
+    Mono<Genre> findByName(String name);
 
-    List<Genre> findByNameIn(Collection<String> name);
+    Flux<Genre> findByNameIn(Collection<String> name);
 }

@@ -1,5 +1,7 @@
 package ru.dartilla.bookkeeper.script;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.dartilla.bookkeeper.script.vo.ScriptDataVo;
 import ru.dartilla.bookkeeper.domain.Script;
 
@@ -8,15 +10,15 @@ import java.util.Optional;
 
 public interface ScriptService {
 
-    Optional<Script> findByAuthorIdAndTitle(String authorId, String title);
+    Mono<Script> findByAuthorIdAndTitle(String authorId, String title);
 
-    Script save(Script script);
+    Mono<Script> save(Script script);
 
-    Optional<Script> findById(String id);
+    Mono<Script> findById(String id);
 
-    Script acquireScript(ScriptDataVo scriptDataVo);
+    Mono<Script> acquireScript(ScriptDataVo scriptDataVo);
 
-    List<Script> findAll();
+    Flux<Script> findAll();
 
-    void deleteById(String id);
+    Mono<Void> deleteById(String id);
 }

@@ -1,12 +1,10 @@
 package ru.dartilla.bookkeeper.repositores;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Mono;
 import ru.dartilla.bookkeeper.domain.Author;
 
-import java.util.Optional;
+public interface AuthorRepository extends ReactiveMongoRepository<Author, String> {
 
-
-public interface AuthorRepository extends MongoRepository<Author, String> {
-
-    Optional<Author> findByName(String name);
+    Mono<Author> findByName(String name);
 }

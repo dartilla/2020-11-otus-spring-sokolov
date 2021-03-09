@@ -24,9 +24,9 @@ class ScriptRepositoryTest {
     @Test
     public void shouldSaveNew() {
         Script expected = new Script(null, "Новая книга", new Author("1", "Кастанеда К."), Set.of(new Genre("1", "Мистика")));
-        scriptRepository.save(expected);
+        scriptRepository.save(expected).block();
         Script actual = scriptRepository.findByAuthorIdAndTitle(
-                expected.getAuthor().getId(), expected.getTitle()).stream().findFirst().get();
+                expected.getAuthor().getId(), expected.getTitle()).block();
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "id");
         assertThat(actual.getId()).isNotNull();
     }
@@ -35,19 +35,18 @@ class ScriptRepositoryTest {
     @Test
     public void shouldUpdateExisting() {
         Script expected = new Script("1", "Новый заголовок", new Author("2", null), Set.of(new Genre("2", null)));
-        scriptRepository.save(expected);
-        Script actual = scriptRepository.findById(expected.getId()).get();
+        scriptRepository.save(expected).block();
+        Script actual = scriptRepository.findById(expected.getId()).block();
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "author", "genres");
         assertThat(actual.getAuthor().getId()).isEqualTo(expected.getAuthor().getId());
         assertThat(actual.getGenres().iterator().next().getId()).isEqualTo(expected.getGenres().iterator().next().getId());
     }
 
-
     @DisplayName("находить рукопись по идентификатору")
     @Test
     public void shouldFindById() {
         Script expected = new Script("1", "Учение дона Хуана", new Author("1", "Кастанеда К."), Set.of(new Genre("1", "Мистика")));
-        assertThat(scriptRepository.findById(expected.getId()).get()).isEqualToComparingOnlyGivenFields(expected,
+        assertThat(scriptRepository.findById(expected.getId()).block()).isEqualToComparingOnlyGivenFields(expected,
                 "id", "title", "author", "genres");
     }
 
@@ -55,7 +54,7 @@ class ScriptRepositoryTest {
     @Test
     public void shouldFindEmptyByWrongId() {
         Script expected = new Script("-999", "Учение дона Хуана", new Author("1", "Кастанеда К."), Set.of(new Genre("1", "Мистика")));
-        assertThat(scriptRepository.findById(expected.getId())).isEmpty();
+        assertThat(scriptRepository.findById(expected.getId()).block()).isNull();
     }
 
     @DisplayName("находить рукопись по автору и заголовку")
@@ -63,12 +62,12 @@ class ScriptRepositoryTest {
     public void shouldFindByAuthorAndTitle() {
         Script expected = new Script("2", "Отдельная реальность", new Author("1", "Кастанеда К."), Set.of(new Genre("1", "Мистика")));
         assertThat(scriptRepository.findByAuthorIdAndTitle(expected.getAuthor().getId(), expected.getTitle()
-        ).get()).isEqualToComparingOnlyGivenFields(expected, "id", "title", "author", "genres");
+        ).block()).isEqualToComparingOnlyGivenFields(expected, "id", "title", "author", "genres");
     }
 
     @DisplayName("находить все книги")
     @Test
     public void shouldFindAll() {
-        assertThat(scriptRepository.findAll()).isNotEmpty();
+        assertThat(scriptRepository.findAll().blockLast()).isNotNull();
     }
 }

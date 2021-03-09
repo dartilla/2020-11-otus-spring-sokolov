@@ -2,6 +2,7 @@ package ru.dartilla.bookkeeper.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 import ru.dartilla.bookkeeper.domain.Author;
 import ru.dartilla.bookkeeper.repositores.AuthorRepository;
 
@@ -14,19 +15,18 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
     @Override
-    public Author insertAuthor(Author author) {
-        authorRepository.save(author);
-        return author;
+    public Mono<Author> insertAuthor(Author author) {
+        return authorRepository.save(author);
     }
 
     @Override
-    public Author acquireAuthor(String name) {
+    public Mono<Author> acquireAuthor(String name) {
         return authorRepository.findByName(name)
-                .orElseGet(() -> insertAuthor(new Author(null, name)));
+                .switchIfEmpty(Mono.defer(() -> insertAuthor(new Author(null, name))));
     }
 
     @Override
-    public Optional<Author> findAuthor(String name) {
+    public Mono<Author> findAuthor(String name) {
         return authorRepository.findByName(name);
     }
 }
