@@ -6,10 +6,13 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dartilla.bookkeeper.domain.Author;
 import ru.dartilla.bookkeeper.domain.Genre;
 import ru.dartilla.bookkeeper.domain.Script;
+import ru.dartilla.bookkeeper.repositores.UserRepository;
 import ru.dartilla.bookkeeper.script.ScriptService;
 import ru.dartilla.bookkeeper.script.vo.ScriptDataVo;
 
@@ -22,12 +25,14 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ScriptController.class)
 @DisplayName("ScriptControllerTest должен")
+@WithMockUser(
+        username = "admin"
+)
 class ScriptControllerTest {
 
     @Autowired
@@ -35,6 +40,16 @@ class ScriptControllerTest {
 
     @MockBean
     private ScriptService scriptService;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    @Test
+    @DisplayName("выводить переходить на страницу логина для анонимного пользователя")
+    @WithAnonymousUser
+    public void shouldListScripts1() throws Exception {
+        mockMvc.perform(get("/script")).andDo(print()).andExpect(status().is3xxRedirection());
+    }
 
     @Test
     @DisplayName("выводить рукописи")

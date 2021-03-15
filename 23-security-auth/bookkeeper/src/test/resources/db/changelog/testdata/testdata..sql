@@ -33,3 +33,8 @@ insert into comment (id, script_id, parent_id, message)
 values (1, 1, null, 'Что курил автор?'),
        (2, 1, 1, 'Читай дальше, там написано'),
        (3, 1, null, 'Какая гадость эта ваша заливная рыба');
+
+--changeset dartilla:2021-03-15--02-user-testdata
+insert into user (id, login, password, enabled)
+values (1, 'testuser1', 'testuser1', 1),
+       (2, 'testuser2', 'testuser2', 0);

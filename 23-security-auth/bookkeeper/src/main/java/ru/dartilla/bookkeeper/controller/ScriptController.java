@@ -24,6 +24,11 @@ public class ScriptController {
 
     private ScriptService scriptService;
 
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/script";
+    }
+
     @GetMapping("/script")
     public String listBook(Model model) {
         model.addAttribute("scripts", scriptService.findAll());
