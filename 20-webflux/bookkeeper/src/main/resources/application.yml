@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      database: bookkeeper
+
+mongock:
+  #  runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.dartilla.bookkeeper.mongock.changelog
