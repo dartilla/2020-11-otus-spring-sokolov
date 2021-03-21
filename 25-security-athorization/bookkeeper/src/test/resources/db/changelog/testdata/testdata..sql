@@ -36,5 +36,12 @@ values (1, 1, null, 'Что курил автор?'),
 
 --changeset dartilla:2021-03-15--02-user-testdata
 insert into user (id, login, password, enabled)
-values (1, 'testuser1', 'testuser1', 1),
-       (2, 'testuser2', 'testuser2', 0);
+values (1, 'donald', 'donald', 1),
+       (2, 'mark', 'mark', 0);
+
+--changeset dartilla:2021-04-03--01-authority-testdata
+insert into authority (login, authority)
+values ('donald', 'USER'),
+       ('donald', 'MANAGER'),
+       ('mark', 'USER');
+

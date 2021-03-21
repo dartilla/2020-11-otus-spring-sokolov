@@ -36,6 +36,7 @@
 <div class="singleLinkDiv">
     <a href="list.html" th:href="@{/script}">All scripts</a>
     <a th:if="${script?.id != null}" href="delete.html" th:href="@{/script/delete/(id=${script.id})}">Delete</a>
+    <a href="login" th:href="@{/logout}">Logout</a>
 </div>
 
 </body>

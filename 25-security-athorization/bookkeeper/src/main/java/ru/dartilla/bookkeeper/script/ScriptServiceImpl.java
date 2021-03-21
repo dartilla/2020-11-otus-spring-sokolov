@@ -1,6 +1,7 @@
 package ru.dartilla.bookkeeper.script;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dartilla.bookkeeper.exception.ScriptIsNotFoundException;
@@ -36,6 +37,7 @@ public class ScriptServiceImpl implements ScriptService {
 
     @Override
     @Transactional
+    @Secured("ROLE_MANAGER")
     public Script save(Script script) {
         return scriptRepository.save(script);
     }
@@ -47,6 +49,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
+    @Secured("ROLE_MANAGER")
     public Script acquireScript(ScriptDataVo scriptDataVo) {
         Author author = authorService.acquireAuthor(scriptDataVo.getAuthorName());
         Set<Genre> genres = new HashSet<>(genreService.findGenreByNames(scriptDataVo.getGenreNames()));
@@ -76,6 +79,7 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
+    @Secured("ROLE_MANAGER")
     public void deleteById(Long id) {
         scriptRepository.deleteById(id);
     }

@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.dartilla.bookkeeper.domain.Author;
 import ru.dartilla.bookkeeper.domain.Genre;
 import ru.dartilla.bookkeeper.domain.Script;
+import ru.dartilla.bookkeeper.repositores.AuthorityRepository;
 import ru.dartilla.bookkeeper.repositores.UserRepository;
 import ru.dartilla.bookkeeper.script.ScriptService;
 import ru.dartilla.bookkeeper.script.vo.ScriptDataVo;
@@ -31,7 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ScriptController.class)
 @DisplayName("ScriptControllerTest должен")
 @WithMockUser(
-        username = "admin"
+        username = "admin",
+        roles = "MANAGER"
 )
 class ScriptControllerTest {
 
@@ -43,6 +45,9 @@ class ScriptControllerTest {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private AuthorityRepository authorityRepository;
 
     @Test
     @DisplayName("выводить переходить на страницу логина для анонимного пользователя")

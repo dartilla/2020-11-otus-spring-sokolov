@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>List of all scripts</title>
@@ -22,16 +23,17 @@
         <td th:text="${script.title}">Колобок</td>
         <td th:text="${script.author.name}">Народная</td>
         <td>
-            <a href="edit.html" th:href="@{/script/edit/(id=${script.id})}">Edit</a>
+            <a sec:authorize="hasRole('MANAGER')" href="edit.html" th:href="@{/script/edit/(id=${script.id})}">Edit</a>
         </td>
         <td>
-            <a href="delete.html" th:href="@{/script/delete/(id=${script.id})}">Delete</a>
+            <a sec:authorize="hasRole('MANAGER')" href="delete.html" th:href="@{/script/delete/(id=${script.id})}">Delete</a>
         </td>
     </tr>
     </tbody>
 </table>
 <div class="singleLinkDiv">
-    <a href="add.html" th:href="@{/script/add}">Add</a>
+    <a sec:authorize="hasRole('MANAGER')" href="add.html" th:href="@{/script/add}">Add</a>
+    <a href="logout" th:href="@{/logout}">Logout</a>
 </div>
 </body>
 </html>

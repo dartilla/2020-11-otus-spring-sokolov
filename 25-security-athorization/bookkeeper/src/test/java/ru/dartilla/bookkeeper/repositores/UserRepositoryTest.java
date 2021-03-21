@@ -22,7 +22,7 @@ class UserRepositoryTest {
     @DisplayName("находить пользователя по его логину")
     @Test
     public void shouldFindByLogin() {
-        User expectedUser = new User(1L, "testuser1", "testuser1", true);
+        User expectedUser = new User(1L, "donald", "donald", true);
         assertThat(userRepository.findByLogin(expectedUser.getLogin()).get()).isEqualTo(expectedUser);
     }
 }

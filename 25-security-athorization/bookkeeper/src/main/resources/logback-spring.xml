@@ -42,7 +42,7 @@
         <appender-ref ref="console"/>
     </root>
 
-    <logger name="org.hibernate.SQL" level="ERROR"/>
+    <logger name="org.hibernate" level="ERROR"/>
 
     <logger name="net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener" level="DEBUG" additivity="false">
         <appender-ref ref="heap" />
