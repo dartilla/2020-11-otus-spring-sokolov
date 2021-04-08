@@ -38,3 +38,10 @@ values (1, 1, null, 'Что курил автор?'),
 insert into user (id, login, password, enabled)
 values (1, 'donald', 'donald', 1),
        (2, 'mark', 'mark', 0);
+
+--changeset dartilla:2021-04-03--01-authority-testdata
+insert into authority (login, authority)
+values ('donald', 'USER'),
+       ('donald', 'MANAGER'),
+       ('mark', 'USER');
+

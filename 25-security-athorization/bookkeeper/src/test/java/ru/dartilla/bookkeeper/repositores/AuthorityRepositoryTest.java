@@ -6,23 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.dartilla.bookkeeper.config.DataSourceBeanConfig;
-import ru.dartilla.bookkeeper.domain.User;
+import ru.dartilla.bookkeeper.domain.Authority;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Репозиторий для работы с пользователями должен")
+@DisplayName("Репозиторий для работы с авторизацией должен")
 @DataJpaTest
 @Import({DataSourceBeanConfig.class})
-class UserRepositoryTest {
+class AuthorityRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private AuthorityRepository authorityRepository;
 
-    @DisplayName("находить пользователя по его логину")
+    @DisplayName("находить авторизации по логину")
     @Test
     public void shouldFindByLogin() {
-        User expectedUser = new User(1L, "donald", "donald", true);
-        assertThat(userRepository.findByLogin(expectedUser.getLogin()).get()).isEqualTo(expectedUser);
+        String login = "donald";
+        assertThat(authorityRepository.findByLogin(login)).containsAll(List.of(new Authority(login, "MANAGER"),
+                new Authority(login, "USER")));
     }
 }
