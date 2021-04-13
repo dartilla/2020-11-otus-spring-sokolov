@@ -1,0 +1,27 @@
+spring:
+  batch:
+    job:
+      enabled: false
+  shell:
+    interactive:
+      enabled: false
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/rootChangelog.xml
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  data:
+    mongodb:
+      database: mongo-db-old
+      host: localhost
+      port: 0
+mongock:
+  #  runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.dartilla.bookkeeper.mms.mongock.changelog
+app:
+  chunkSize: 5
