@@ -13,6 +13,16 @@ spring:
       jdbc:
         batch_size: 5
     show-sql: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health, metrics, logfile, loggers"
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      external-file: target/logs/heap.log
 
 ---
 spring:
