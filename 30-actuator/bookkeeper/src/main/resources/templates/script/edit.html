@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Fill script</title>
+    <link rel="stylesheet" href="../../webapp/css/common.css" th:href="@{/css/common.css}">
+</head>
+<body>
+
+<!-- Script edition -->
+<form id="edit-form" action="edit.html" th:action="@{/script}" th:method="post">
+    <h1>Script Info:</h1>
+
+    <div class="row" th:if="${script?.id != null}">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" name="id" readonly="readonly" value="1" th:value="${script?.id}"/>
+    </div>
+    <div class="row">
+        <label>Title:</label>
+        <input name="title" type="text" value="Колобок" th:value="${script?.title}"/>
+    </div>
+    <div class="row">
+        <label>Author:</label>
+        <input name="authorName" type="text" value="Народная" th:value="${script?.author?.name}"/>
+    </div>
+    <div class="row">
+        <label>Genres:</label>
+        <input name="genreNames" type="text" value="Драма" th:value="${genres}"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+<div class="singleLinkDiv">
+    <a href="list.html" th:href="@{/script}">All scripts</a>
+    <a th:if="${script?.id != null}" href="delete.html" th:href="@{/script/delete/(id=${script.id})}">Delete</a>
+    <a href="login" th:href="@{/logout}">Logout</a>
+</div>
+
+</body>
+</html>
