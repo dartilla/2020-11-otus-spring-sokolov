@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Error page</title>
+    <link rel="stylesheet" href="../../webapp/css/common.css" th:href="@{/css/common.css}">
+</head>
+<body>
+<h1>Exception:</h1>
+<p th:text="${errorMessage}"></p>
+
+<div class="singleLinkDiv">
+    <a class="allScriptsLink" href="list.html" th:href="@{/script}">All scripts</a>
+    <a href="login" th:href="@{/logout}">Logout</a>
+</div>
+

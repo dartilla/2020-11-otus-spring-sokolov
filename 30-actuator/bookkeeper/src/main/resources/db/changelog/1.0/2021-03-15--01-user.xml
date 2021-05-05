@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="2021-03-15--01-user" author="dartilla">
+        <createTable tableName="user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_id"/>
+            </column>
+            <column name="login" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="NUMERIC(1, 0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="user" indexName="I01_user" unique="true">
+            <column name="login"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="2021-03-21--02-authority" author="dartilla">
+        <createTable tableName="authority">
+            <column name="login" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="authority" indexName="I01_authority" unique="true">
+            <column name="login"/>
+            <column name="authority"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
